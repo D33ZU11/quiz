@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yvonne's Game | Gothic Viking Fate</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #0a080d;
+      --card-bg: rgba(22, 17, 28, 0.95);
+      --gold: #d4af37;
+      --gold-glow: #ffe89e;
+      --red-accent: #9e0b0b;
+      --red-glow: #ff3b3b;
+      --blue-accent: #1e4a7a;
+      --blue-glow: #00bfff;
+      --text-light: #f0eaf5;
+      --text-muted: #b8a8ca;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      background-image: radial-gradient(circle at center, #1c1128 0%, #050407 100%);
+      color: var(--text-light);
+      font-family: 'Montserrat', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 680px;
+      width: 100%;
+      background: var(--card-bg);
+      border: 2px solid #3d2a4a;
+      box-shadow: 0 0 35px rgba(0,0,0,0.9), inset 0 0 20px rgba(212,175,55,0.08);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      color: var(--gold);
+      font-size: 2.2rem;
+      letter-spacing: 2px;
+      margin-bottom: 5px;
+      text-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+    }
+
+    .subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 25px;
+    }
+
+    /* Player Setup */
+    .turn-tracker {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .player-btn {
+      background: #15101a;
+      border: 1px solid #483358;
+      color: var(--text-muted);
+      padding: 10px 22px;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .player-btn.active {
+      border-color: var(--gold);
+      color: var(--gold);
+      box-shadow: 0 0 14px rgba(212, 175, 55, 0.35);
+      background: #2b1c36;
+    }
+
+    /* Intelligence & Streak Dashboard */
+    .dashboard {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      background: rgba(10, 8, 14, 0.8);
+      border: 1px solid #332240;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 25px;
+      font-size: 0.85rem;
+    }
+
+    .stat-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      color: var(--gold);
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    /* Panels */
+    .game-panel {
+      display: none;
+    }
+
+    .game-panel.active {
+      display: block;
+      animation: fadeIn 0.4s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Quiz Box Styling */
+    .quiz-box {
+      background: rgba(14, 10, 20, 0.85);
+      border: 1px solid #422d52;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+
+    .question-header {
+      display: flex;
+      justify-content: space-between;
+      color: var(--gold);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .question-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.25rem;
+      color: #ffffff;
+      margin-bottom: 20px;
+      line-height: 1.5;
+      font-weight: 600;
+    }
+
+    .options-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .option-btn {
+      background: #1b1324;
+      border: 1px solid #4a345c;
+      color: var(--text-light);
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+    }
+
+    .option-btn:hover {
+      border-color: var(--gold);
+      background: #2b1d3a;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+    }
+
+    .option-btn.correct {
+      background: #0d381e !important;
+      border-color: #2ecc71 !important;
+      color: #2ecc71 !important;
+      font-weight: 700;
+    }
+
+    .option-btn.wrong {
+      background: #420f0f !important;
+      border-color: #e74c3c !important;
+      color: #e74c3c !important;
+    }
+
+    /* Dice Layer Styling */
+    .dice-area {
+      display: flex;
+      justify-content: space-around;
+      margin: 25px 0;
+      gap: 20px;
+    }
+
+    .dice-box {
+      flex: 1;
+      background: rgba(10, 8, 14, 0.7);
+      border-radius: 12px;
+      padding: 20px 10px;
+      border: 1px solid #332240;
+    }
+
+    .dice {
+      width: 80px;
+      height: 80px;
+      margin: 15px auto;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      font-weight: 700;
+      font-family: 'Cinzel', serif;
+      box-shadow: inset 0 0 12px rgba(0,0,0,0.8);
+    }
+
+    .dice-red {
+      background: linear-gradient(145deg, #500000, #1a0000);
+      border: 2px solid var(--red-accent);
+      color: #ffcccc;
+      text-shadow: 0 0 10px var(--red-glow);
+    }
+
+    .dice-blue {
+      background: linear-gradient(145deg, #0a2540, #020b14);
+      border: 2px solid var(--blue-accent);
+      color: #ccf2ff;
+      text-shadow: 0 0 10px var(--blue-glow);
+    }
+
+    .roll-btn {
+      background: linear-gradient(180deg, #8b0000 0%, #4a0000 100%);
+      border: 2px solid var(--gold);
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      padding: 15px 40px;
+      border-radius: 30px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      box-shadow: 0 0 20px rgba(139, 0, 0, 0.6);
+      transition: all 0.2s;
+    }
+
+    .roll-btn:hover {
+      transform: scale(1.04);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
+    }
+
+    /* Result Card */
+    .result-card {
+      margin-top: 25px;
+      background: rgba(15, 10, 20, 0.95);
+      border: 1px dashed var(--gold);
+      border-radius: 10px;
+      padding: 22px;
+      display: none;
+    }
+
+    .result-card h3 {
+      font-family: 'Cinzel', serif;
+      color: var(--gold);
+      margin-bottom: 12px;
+      font-size: 1.3rem;
+    }
+
+    .outcome-text {
+      font-size: 1.15rem;
+      line-height: 1.6;
+    }
+
+    .outcome-red { color: #ff6b6b; font-weight: 600; }
+    .outcome-blue { color: #64dfdf; font-weight: 600; }
+
+    .action-btn {
+      background: #23172e;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      padding: 12px 24px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      margin-top: 15px;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #3b234f;
+      box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
+    }
+
+    .shake { animation: shake 0.4s infinite; }
+    @keyframes shake {
+      0% { transform: translate(1px, 1px) rotate(0deg); }
+      20% { transform: translate(-2px, -2px) rotate(-2deg); }
+      40% { transform: translate(2px, 0px) rotate(2deg); }
+      60% { transform: translate(-1px, 2px) rotate(0deg); }
+      80% { transform: translate(2px, 1px) rotate(1deg); }
+      100% { transform: translate(1px, -2px) rotate(-1deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Yvonne's Game</h1>
+    <div class="subtitle">ᚱᚢᚾᛖ Adaptive Knowledge & Erotic Consequence ᚱᚢᚾᛖ</div>
+
+    <!-- Active Player Selector -->
+    <div class="turn-tracker">
+      <button class="player-btn active" id="btnYvonne" onclick="setPlayer('Yvonne', this)">Yvonne's Turn</button>
+      <button class="player-btn" id="btnPartner" onclick="setPlayer('Partner', this)">Partner's Turn</button>
+    </div>
+
+    <!-- Intelligence & Streak Dashboard -->
+    <div class="dashboard">
+      <div class="stat-box">
+        <span class="stat-label">Difficulty</span>
+        <span class="stat-value" id="diffLevel">Level 1</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">Intellect Rank</span>
+        <span class="stat-value" id="intellectRank">Novice</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">Streak</span>
+        <span class="stat-value" id="streakCount">0</span>
+      </div>
+    </div>
+
+    <!-- LAYER 1: ADAPTIVE QUIZ LAYER -->
+    <div id="quizPanel" class="game-panel active">
+      <div class="quiz-box">
+        <div class="question-header">
+          <span id="questionCategory">Category: General Knowledge</span>
+          <span id="questionTierText">Tier: 1</span>
+        </div>
+        <div class="question-title" id="questionText">Loading question...</div>
+        
+        <div class="options-grid" id="optionsGrid">
+          <!-- Options injected dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- LAYER 2: DICE LAYER -->
+    <div id="dicePanel" class="game-panel">
+      <div style="font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 15px; font-size: 1.15rem;" id="diceInstruction">
+        Fate is sealed! Cast your dice to determine your sentence.
+      </div>
+      
+      <div class="dice-area">
+        <div class="dice-box">
+          <div style="color: #ff6b6b; font-family: 'Cinzel', serif; font-weight: 600;">Action (Red)</div>
+          <div class="dice dice-red" id="diceRed">ᚠ</div>
+        </div>
+        <div class="dice-box">
+          <div style="color: #64dfdf; font-family: 'Cinzel', serif; font-weight: 600;">Duration (Blue)</div>
+          <div class="dice dice-blue" id="diceBlue">ᚢ</div>
+        </div>
+      </div>
+
+      <button class="roll-btn" onclick="rollDice()">Cast the Dice</button>
+
+      <div class="result-card" id="resultCard">
+        <h3 id="resultHeader">Fate Has Decided</h3>
+        <div class="outcome-text">
+          <span class="outcome-red" id="redOutcome"></span> 
+          <br>
+          <span class="outcome-blue" id="blueOutcome"></span>
+        </div>
+        <button class="action-btn" onclick="resetToQuiz()">Return to Quiz</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // General Knowledge Question Bank (Tiered Level 1 to 5)
+    const questionBank = {
+      1: [ // Level 1: Casual / Easy
+        {
+          category: "Geography",
+          q: "What is the capital city of Scotland?",
+          options: ["Glasgow", "Edinburgh", "Aberdeen", "Dundee"],
+          answer: 1
+        },
+        {
+          category: "Pop Culture",
+          q: "Which element on the periodic table has the chemical symbol 'O'?",
+          options: ["Gold", "Osmium", "Oxygen", "Zinc"],
+          answer: 2
+        },
+        {
+          category: "General Knowledge",
+          q: "How many sides does a standard hexagon have?",
+          options: ["5", "6", "7", "8"],
+          answer: 1
+        }
+      ],
+      2: [ // Level 2: Moderate
+        {
+          category: "History",
+          q: "In which year did the Battle of Hastings take place in England?",
+          options: ["1066", "1215", "1415", "1588"],
+          answer: 0
+        },
+        {
+          category: "Nature & Animals",
+          q: "What is the largest mammal currently living on Earth?",
+          options: ["African Elephant", "Blue Whale", "Colossal Squid", "Giraffe"],
+          answer: 1
+        },
+        {
+          category: "Literature",
+          q: "Who wrote the classic Gothic novel 'Frankenstein'?",
+          options: ["Bram Stoker", "Mary Shelley", "Jane Austen", "Charles Dickens"],
+          answer: 1
+        }
+      ],
+      3: [ // Level 3: Challenging
+        {
+          category: "Human Anatomy",
+          q: "Which organ in the human body consumes roughly 20% of the body's total oxygen intake?",
+          options: ["Lungs", "Heart", "Liver", "Brain"],
+          answer: 3
+        },
+        {
+          category: "World History",
+          q: "Which ancient civilization constructed the city of Machu Picchu high in the Andes?",
+          options: ["Aztecs", "Mayans", "Incas", "Toltecs"],
+          answer: 2
+        },
+        {
+          category: "Physics & Chemistry",
+          q: "What is the hardest naturally occurring substance found on Earth?",
+          options: ["Titanium", "Diamond", "Quartz", "Graphene"],
+          answer: 1
+        }
+      ],
+      4: [ // Level 4: Advanced
+        {
+          category: "Astronomy & Physics",
+          q: "What is the theoretical boundary surrounding a black hole beyond which nothing can escape?",
+          options: ["Photon Sphere", "Singularity", "Event Horizon", "Accretion Disk"],
+          answer: 2
+        },
+        {
+          category: "World History",
+          q: "Who was the first Emperor of a unified China, famous for his Terracotta Army?",
+          options: ["Qin Shi Huang", "Kublai Khan", "Sun Tzu", "Emperor Wu of Han"],
+          answer: 0
+        },
+        {
+          category: "Classical Literature",
+          q: "In Norse mythology, what is the name of the great hall ruled over by the god Odin?",
+          options: ["Asgard", "Valhalla", "Midgard", "Niflheim"],
+          answer: 1
+        }
+      ],
+      5: [ // Level 5: Genius / Mastermind
+        {
+          category: "Philosophy & Science",
+          q: "Which ancient philosopher formulated the famous line 'I think, therefore I am' (Cogito, ergo sum)?",
+          options: ["Spinoza", "Immanuel Kant", "René Descartes", "Friedrich Nietzsche"],
+          answer: 2
+        },
+        {
+          category: "Botany & Science",
+          q: "What pigment gives red, purple, and blue plants their vibrant colors and acts as an antioxidant?",
+          options: ["Chlorophyll", "Anthocyanin", "Carotenoid", "Xanthophyll"],
+          answer: 1
+        },
+        {
+          category: "History & Antiquity",
+          q: "The Roman Empire reached its greatest geographical expanse under which Emperor in 117 AD?",
+          options: ["Augustus", "Trajan", "Hadrian", "Marcus Aurelius"],
+          answer: 1
+        }
+      ]
+    };
+
+    let currentPlayer = 'Yvonne';
+    let currentLevel = 1;
+    let currentStreak = 0;
+    let totalScore = 0;
+    let activeRuleKey = null;
+    let currentQ = null;
+
+    const rankTitles = {
+      1: "Novice",
+      2: "Casual Thinker",
+      3: "Sharp Scholar",
+      4: "Intellectual Giant",
+      5: "Grand Mastermind"
+    };
+
+    const rules = {
+      right3: {
+        title: "3 Right in a Row — Reward",
+        red: { 1: "Lick ass", 2: "Suck cock", 3: "Kiss", 4: "Ball play", 5: "Lick ass & milk cock together", 6: "Lick nipples" },
+        blue: { 1: "5 mins", 2: "10 times", 3: "15 seconds", 4: "15 times", 5: "10 mins", 6: "You choose duration/count" }
+      },
+      wrong2: {
+        title: "2 Wrong in a Row — Penance",
+        red: { 1: "Smack in ass", 2: "Pull nipples", 3: "Bite neck", 4: "Slap cock", 5: "Slap face", 6: "You choose action" },
+        blue: { 1: "10 seconds", 2: "4 times", 3: "You choose duration/count", 4: "15 times", 5: "5 mins", 6: "I choose duration/count" }
+      },
+      wrong4: {
+        title: "4 Wrong in a Row — Severe Punishment",
+        red: { 1: "Chest smacked", 2: "Cock pulled", 3: "Balls squeezed", 4: "Kick in balls", 5: "Back slapped", 6: "You choose action" },
+        blue: { 1: "I choose duration/count", 2: "6 times", 3: "You choose duration/count", 4: "5 mins", 5: "11 mins", 6: "20 times" }
+      }
+    };
+
+    function setPlayer(player, btn) {
+      document.querySelectorAll('.player-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentPlayer = player;
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const tierList = questionBank[currentLevel];
+      currentQ = tierList[Math.floor(Math.random() * tierList.length)];
+
+      document.getElementById('questionCategory').innerText = `Category: ${currentQ.category}`;
+      document.getElementById('questionTierText').innerText = `Tier: ${currentLevel}`;
+      document.getElementById('questionText').innerText = `${currentPlayer}: ${currentQ.q}`;
+
+      const optionsGrid = document.getElementById('optionsGrid');
+      optionsGrid.innerHTML = '';
+
+      currentQ.options.forEach((optText, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<span style="color:var(--gold); font-weight:bold; margin-right:12px;">${String.fromCharCode(65 + idx)}.</span> ${optText}`;
+        btn.onclick = () => selectOption(idx, btn);
+        optionsGrid.appendChild(btn);
+      });
+    }
+
+    function selectOption(idx, clickedBtn) {
+      const allBtns = document.querySelectorAll('.option-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      const isCorrect = (idx === currentQ.answer);
+
+      if (isCorrect) {
+        clickedBtn.classList.add('correct');
+        totalScore += currentLevel * 10;
+        if (currentStreak < 0) currentStreak = 1;
+        else currentStreak++;
+
+        // Increase level if performing well
+        if (currentStreak > 1 && currentLevel < 5) currentLevel++;
+      } else {
+        clickedBtn.classList.add('wrong');
+        allBtns[currentQ.answer].classList.add('correct');
+        if (currentStreak > 0) currentStreak = -1;
+        else currentStreak--;
+
+        // Drop difficulty level on error
+        if (currentLevel > 1) currentLevel--;
+      }
+
+      updateDashboard();
+
+      setTimeout(() => {
+        if (currentStreak >= 3) {
+          triggerDiceLayer('right3');
+        } else if (currentStreak <= -4) {
+          triggerDiceLayer('wrong4');
+        } else if (currentStreak <= -2) {
+          triggerDiceLayer('wrong2');
+        } else {
+          loadQuestion();
+        }
+      }, 1400);
+    }
+
+    function updateDashboard() {
+      document.getElementById('diffLevel').innerText = `Level ${currentLevel}`;
+      document.getElementById('intellectRank').innerText = rankTitles[currentLevel];
+      document.getElementById('streakCount').innerText = currentStreak;
+    }
+
+    function triggerDiceLayer(ruleKey) {
+      activeRuleKey = ruleKey;
+      document.getElementById('quizPanel').classList.remove('active');
+      document.getElementById('dicePanel').classList.add('active');
+      document.getElementById('diceInstruction').innerText = `${currentPlayer} triggered: ${rules[ruleKey].title}! Cast the dice.`;
+      document.getElementById('resultCard').style.display = 'none';
+      document.getElementById('diceRed').innerText = 'ᚠ';
+      document.getElementById('diceBlue').innerText = 'ᚢ';
+    }
+
+    function resetToQuiz() {
+      currentStreak = 0;
+      updateDashboard();
+      document.getElementById('dicePanel').classList.remove('active');
+      document.getElementById('quizPanel').classList.add('active');
+      loadQuestion();
+    }
+
+    function playSound() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        for (let i = 0; i < 5; i++) {
+          setTimeout(() => {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(120 + Math.random() * 80, ctx.currentTime);
+            gain.gain.setValueAtTime(0.3, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.05);
+          }, i * 70);
+        }
+      } catch(e) {}
+    }
+
+    function rollDice() {
+      const redDice = document.getElementById('diceRed');
+      const blueDice = document.getElementById('diceBlue');
+      const resultCard = document.getElementById('resultCard');
+
+      playSound();
+      redDice.classList.add('shake');
+      blueDice.classList.add('shake');
+      resultCard.style.display = 'none';
+
+      let count = 0;
+      const interval = setInterval(() => {
+        redDice.innerText = Math.floor(Math.random() * 6) + 1;
+        blueDice.innerText = Math.floor(Math.random() * 6) + 1;
+        count++;
+
+        if (count > 12) {
+          clearInterval(interval);
+          
+          const redVal = Math.floor(Math.random() * 6) + 1;
+          const blueVal = Math.floor(Math.random() * 6) + 1;
+
+          redDice.innerText = redVal;
+          blueDice.innerText = blueVal;
+
+          redDice.classList.remove('shake');
+          blueDice.classList.remove('shake');
+
+          const ruleSet = rules[activeRuleKey];
+          document.getElementById('resultHeader').innerText = `${currentPlayer}'s Fate: ${ruleSet.title}`;
+          document.getElementById('redOutcome').innerText = `Action: ${ruleSet.red[redVal]}`;
+          document.getElementById('blueOutcome').innerText = `Duration / Count: ${ruleSet.blue[blueVal]}`;
+          resultCard.style.display = 'block';
+        }
+      }, 70);
+    }
+
+    window.onload = function() {
+      loadQuestion();
+      updateDashboard();
+    };
+  </script>
+</body>
+</html>
