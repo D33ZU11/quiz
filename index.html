@@ -30,21 +30,6 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
-      line-height: 1.6;
-      transition: background-color 0.3s ease;
-    }
-
-    body.wrong-flash {
-      background-color: #3b0505 !important;
-      animation: bodyShake 0.3s ease;
-    }
-
-    @keyframes bodyShake {
-      0% { transform: translateX(0); }
-      25% { transform: translateX(-6px); }
-      50% { transform: translateX(6px); }
-      75% { transform: translateX(-4px); }
-      100% { transform: translateX(0); }
     }
 
     .container {
@@ -52,11 +37,10 @@
       width: 100%;
       background: var(--card-bg);
       border: 2px solid #3d2a4a;
-      box-shadow: 0 0 35px rgba(0,0,0,0.9), inset 0 0 20px rgba(212,175,55,0.08);
+      box-shadow: 0 0 35px rgba(0,0,0,0.9);
       border-radius: 16px;
       padding: 30px;
       text-align: center;
-      position: relative;
     }
 
     h1 {
@@ -112,12 +96,7 @@
 
     /* Panels */
     .game-panel { display: none; }
-    .game-panel.active { display: block; animation: fadeIn 0.4s ease-in-out; }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    .game-panel.active { display: block; }
 
     /* Quiz Box Styling */
     .quiz-box {
@@ -136,7 +115,6 @@
       font-weight: 600;
       margin-bottom: 12px;
       text-transform: uppercase;
-      letter-spacing: 1px;
     }
 
     .question-title {
@@ -145,7 +123,6 @@
       color: #ffffff;
       margin-bottom: 20px;
       line-height: 1.5;
-      font-weight: 600;
     }
 
     .options-grid {
@@ -166,21 +143,18 @@
       cursor: pointer;
       text-align: left;
       transition: all 0.2s;
-      display: flex;
-      align-items: center;
     }
 
     .option-btn:hover {
       border-color: var(--gold);
       background: #2b1d3a;
-      box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
     }
 
     .option-btn.correct {
       background: #0d381e !important;
       border-color: #2ecc71 !important;
       color: #2ecc71 !important;
-      font-weight: 700;
+      font-weight: bold;
     }
 
     .option-btn.wrong {
@@ -199,16 +173,13 @@
       padding: 12px 30px;
       border-radius: 25px;
       cursor: pointer;
-      margin-top: 15px;
       display: none;
+      margin-top: 15px;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      transition: all 0.2s;
     }
 
     .next-btn:hover {
       background: #4f3363;
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
     }
 
     /* Dice Layer Styling */
@@ -238,21 +209,18 @@
       font-size: 2.4rem;
       font-weight: 700;
       font-family: 'Cinzel', serif;
-      box-shadow: inset 0 0 12px rgba(0,0,0,0.8);
     }
 
     .dice-red {
       background: linear-gradient(145deg, #500000, #1a0000);
       border: 2px solid var(--red-accent);
       color: #ffcccc;
-      text-shadow: 0 0 10px #ff3b3b;
     }
 
     .dice-blue {
       background: linear-gradient(145deg, #0a2540, #020b14);
       border: 2px solid var(--blue-accent);
       color: #ccf2ff;
-      text-shadow: 0 0 10px #00bfff;
     }
 
     .roll-btn {
@@ -266,14 +234,6 @@
       border-radius: 30px;
       cursor: pointer;
       text-transform: uppercase;
-      letter-spacing: 2px;
-      box-shadow: 0 0 20px rgba(139, 0, 0, 0.6);
-      transition: all 0.2s;
-    }
-
-    .roll-btn:hover {
-      transform: scale(1.04);
-      box-shadow: 0 0 25px rgba(212, 175, 55, 0.6);
     }
 
     .result-card {
@@ -285,17 +245,6 @@
       display: none;
     }
 
-    .result-card h3 {
-      font-family: 'Cinzel', serif;
-      color: var(--gold);
-      margin-bottom: 12px;
-      font-size: 1.3rem;
-    }
-
-    .outcome-text { font-size: 1.15rem; line-height: 1.6; }
-    .outcome-red { color: #ff6b6b; font-weight: 600; }
-    .outcome-blue { color: #64dfdf; font-weight: 600; }
-
     .action-btn {
       background: #23172e;
       border: 1px solid var(--gold);
@@ -305,24 +254,7 @@
       padding: 12px 24px;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 0.95rem;
       margin-top: 15px;
-      transition: all 0.2s;
-    }
-
-    .action-btn:hover {
-      background: #3b234f;
-      box-shadow: 0 0 12px rgba(212, 175, 55, 0.3);
-    }
-
-    .shake { animation: shake 0.4s infinite; }
-    @keyframes shake {
-      0% { transform: translate(1px, 1px) rotate(0deg); }
-      20% { transform: translate(-2px, -2px) rotate(-3deg); }
-      40% { transform: translate(2px, 0px) rotate(3deg); }
-      60% { transform: translate(-1px, 2px) rotate(0deg); }
-      80% { transform: translate(2px, 1px) rotate(2deg); }
-      100% { transform: translate(1px, -2px) rotate(-1deg); }
     }
   </style>
 </head>
@@ -332,71 +264,49 @@
     <h1>The Innocent One's Trial</h1>
     <div class="subtitle">ᚱᚢᚾᛖ Knowledge, Fate & Consequences ᚱᚢᚾᛖ</div>
 
-    <!-- Dashboard Tally -->
     <div class="dashboard">
-      <div class="stat-box">
-        <span class="stat-label">Correct</span>
-        <span class="stat-value" id="correctCount" style="color: #2ecc71;">0</span>
-      </div>
-      <div class="stat-box">
-        <span class="stat-label">Wrong</span>
-        <span class="stat-value" id="wrongCount" style="color: #e74c3c;">0</span>
-      </div>
-      <div class="stat-box">
-        <span class="stat-label">Level</span>
-        <span class="stat-value" id="diffLevel">1</span>
-      </div>
-      <div class="stat-box">
-        <span class="stat-label">Streak</span>
-        <span class="stat-value" id="streakCount">0</span>
-      </div>
+      <div class="stat-box"><span class="stat-label">Correct</span><span class="stat-value" id="correctCount" style="color: #2ecc71;">0</span></div>
+      <div class="stat-box"><span class="stat-label">Wrong</span><span class="stat-value" id="wrongCount" style="color: #e74c3c;">0</span></div>
+      <div class="stat-box"><span class="stat-label">Level</span><span class="stat-value" id="diffLevel">1</span></div>
+      <div class="stat-box"><span class="stat-label">Streak</span><span class="stat-value" id="streakCount">0</span></div>
     </div>
 
-    <!-- LAYER 1: QUIZ LAYER -->
+    <!-- QUIZ PANEL -->
     <div id="quizPanel" class="game-panel active">
       <div class="quiz-box">
         <div class="question-header">
-          <span id="questionCategory">Category: General Knowledge</span>
+          <span id="questionCategory">Category</span>
           <span id="questionTierText">Tier: 1</span>
         </div>
-        <div class="question-title" id="questionText">Loading question...</div>
-        
+        <div class="question-title" id="questionText">Loading...</div>
         <div class="options-grid" id="optionsGrid"></div>
-        
-        <button class="next-btn" id="nextQuestionBtn" onclick="nextQuestion()">Next Question ➔</button>
+        <button class="next-btn" id="nextQuestionBtn" onclick="proceedNext()">Next Question ➔</button>
       </div>
     </div>
 
-    <!-- LAYER 2: DICE LAYER -->
+    <!-- DICE PANEL -->
     <div id="dicePanel" class="game-panel">
-      <div style="font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 15px; font-size: 1.15rem;" id="diceInstruction">
-        Fate is sealed! Cast your dice to determine your sentence.
-      </div>
-      
+      <div style="font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 15px; font-size: 1.15rem;" id="diceInstruction">Fate is sealed! Cast your dice.</div>
       <div class="dice-area">
         <div class="dice-box">
-          <div style="color: #ff6b6b; font-family: 'Cinzel', serif; font-weight: 600;">Action (Red)</div>
+          <div style="color: #ff6b6b; font-family: 'Cinzel', serif;">Action (Red)</div>
           <div class="dice dice-red" id="diceRed">ᚠ</div>
         </div>
         <div class="dice-box">
-          <div style="color: #64dfdf; font-family: 'Cinzel', serif; font-weight: 600;">Duration (Blue)</div>
+          <div style="color: #64dfdf; font-family: 'Cinzel', serif;">Duration (Blue)</div>
           <div class="dice dice-blue" id="diceBlue">ᚢ</div>
         </div>
       </div>
-
       <button class="roll-btn" onclick="rollDice()">Cast the Dice</button>
-
       <div class="result-card" id="resultCard">
-        <h3 id="resultHeader">Fate Has Decided</h3>
-        <div class="outcome-text">
-          <span class="outcome-red" id="redOutcome"></span> 
-          <br>
-          <span class="outcome-blue" id="blueOutcome"></span>
+        <h3 id="resultHeader" style="font-family:'Cinzel',serif; color:var(--gold); margin-bottom:10px;">Fate Has Decided</h3>
+        <div class="outcome-text" style="font-size: 1.1rem; line-height: 1.6;">
+          <span id="redOutcome" style="color:#ff6b6b; font-weight:600;"></span><br>
+          <span id="blueOutcome" style="color:#64dfdf; font-weight:600;"></span>
         </div>
         <button class="action-btn" onclick="resetToQuiz()">Return to Trial</button>
       </div>
     </div>
-
   </div>
 
   <script>
@@ -429,12 +339,12 @@
     };
 
     let currentLevel = 1;
-    let currentStreak = 0;
+    let streak = 0;
     let totalCorrect = 0;
     let totalWrong = 0;
-    let activeRuleKey = null;
     let currentQ = null;
-    let pendingDiceTrigger = null;
+    let activeRuleKey = null;
+    let pendingTrigger = null;
 
     const rules = {
       right3: {
@@ -459,19 +369,18 @@
       const tierList = questionBank[currentLevel] || questionBank[1];
       currentQ = tierList[Math.floor(Math.random() * tierList.length)];
 
-      document.getElementById('questionCategory').innerText = `Category: ${currentQ.category}`;
+      document.getElementById('questionCategory').innerText = currentQ.category;
       document.getElementById('questionTierText').innerText = `Tier: ${currentLevel}`;
-      document.getElementById('questionText').innerText = `The Innocent One: ${currentQ.q}`;
+      document.getElementById('questionText').innerText = currentQ.q;
 
-      const optionsGrid = document.getElementById('optionsGrid');
-      optionsGrid.innerHTML = '';
-
-      currentQ.options.forEach((optText, idx) => {
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+      currentQ.options.forEach((opt, idx) => {
         const btn = document.createElement('button');
         btn.className = 'option-btn';
-        btn.innerHTML = `<span style="color:var(--gold); font-weight:bold; margin-right:12px;">${String.fromCharCode(65 + idx)}.</span> ${optText}`;
+        btn.innerHTML = `<b>${String.fromCharCode(65 + idx)}.</b> ${opt}`;
         btn.onclick = () => selectOption(idx, btn);
-        optionsGrid.appendChild(btn);
+        grid.appendChild(btn);
       });
     }
 
@@ -484,43 +393,39 @@
       if (isCorrect) {
         clickedBtn.classList.add('correct');
         totalCorrect++;
-        if (currentStreak < 0) currentStreak = 1;
-        else currentStreak++;
+        if (streak < 0) streak = 1;
+        else streak++;
 
-        if (currentStreak > 1 && currentLevel < 5) currentLevel++;
-        confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+        if (streak > 1 && currentLevel < 5) currentLevel++;
+        confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
       } else {
         clickedBtn.classList.add('wrong');
         allBtns[currentQ.answer].classList.add('correct');
         totalWrong++;
-        if (currentStreak > 0) currentStreak = -1;
-        else currentStreak--;
-
-        document.body.classList.add('wrong-flash');
-        setTimeout(() => document.body.classList.remove('wrong-flash'), 400);
+        if (streak > 0) streak = -1;
+        else streak--;
       }
 
       updateDashboard();
 
-      // Check if a streak threshold was reached
-      if (currentStreak >= 3) {
-        pendingDiceTrigger = 'right3';
-      } else if (currentStreak <= -4) {
-        pendingDiceTrigger = 'wrong4';
-      } else if (currentStreak <= -2) {
-        pendingDiceTrigger = 'wrong2';
+      // Set trigger conditions
+      if (streak >= 3) {
+        pendingTrigger = 'right3';
+      } else if (streak <= -4) {
+        pendingTrigger = 'wrong4';
+      } else if (streak <= -2) {
+        pendingTrigger = 'wrong2';
       } else {
-        pendingDiceTrigger = null;
+        pendingTrigger = null;
       }
 
-      // Show the Next Question button
       document.getElementById('nextQuestionBtn').style.display = 'inline-block';
     }
 
-    function nextQuestion() {
-      if (pendingDiceTrigger) {
-        triggerDiceLayer(pendingDiceTrigger);
-        pendingDiceTrigger = null;
+    function proceedNext() {
+      if (pendingTrigger) {
+        triggerDice(pendingTrigger);
+        pendingTrigger = null;
       } else {
         loadQuestion();
       }
@@ -530,21 +435,21 @@
       document.getElementById('correctCount').innerText = totalCorrect;
       document.getElementById('wrongCount').innerText = totalWrong;
       document.getElementById('diffLevel').innerText = currentLevel;
-      document.getElementById('streakCount').innerText = currentStreak;
+      document.getElementById('streakCount').innerText = streak;
     }
 
-    function triggerDiceLayer(ruleKey) {
+    function triggerDice(ruleKey) {
       activeRuleKey = ruleKey;
       document.getElementById('quizPanel').classList.remove('active');
       document.getElementById('dicePanel').classList.add('active');
-      document.getElementById('diceInstruction').innerText = `The Innocent One triggered: ${rules[ruleKey].title}! Cast the dice.`;
+      document.getElementById('diceInstruction').innerText = `Triggered: ${rules[ruleKey].title}! Cast the dice.`;
       document.getElementById('resultCard').style.display = 'none';
       document.getElementById('diceRed').innerText = 'ᚠ';
       document.getElementById('diceBlue').innerText = 'ᚢ';
     }
 
     function resetToQuiz() {
-      currentStreak = 0;
+      streak = 0;
       updateDashboard();
       document.getElementById('dicePanel').classList.remove('active');
       document.getElementById('quizPanel').classList.add('active');
@@ -555,9 +460,6 @@
       const redDice = document.getElementById('diceRed');
       const blueDice = document.getElementById('diceBlue');
       const resultCard = document.getElementById('resultCard');
-
-      redDice.classList.add('shake');
-      blueDice.classList.add('shake');
       resultCard.style.display = 'none';
 
       let count = 0;
@@ -565,31 +467,23 @@
         redDice.innerText = Math.floor(Math.random() * 6) + 1;
         blueDice.innerText = Math.floor(Math.random() * 6) + 1;
         count++;
-
-        if (count > 12) {
+        if (count > 10) {
           clearInterval(interval);
-          const redVal = Math.floor(Math.random() * 6) + 1;
-          const blueVal = Math.floor(Math.random() * 6) + 1;
-
-          redDice.innerText = redVal;
-          blueDice.innerText = blueVal;
-
-          redDice.classList.remove('shake');
-          blueDice.classList.remove('shake');
+          const rVal = Math.floor(Math.random() * 6) + 1;
+          const bVal = Math.floor(Math.random() * 6) + 1;
+          redDice.innerText = rVal;
+          blueDice.innerText = bVal;
 
           const ruleSet = rules[activeRuleKey];
-          document.getElementById('resultHeader').innerText = `The Innocent One's Fate: ${ruleSet.title}`;
-          document.getElementById('redOutcome').innerText = `Action: ${ruleSet.red[redVal]}`;
-          document.getElementById('blueOutcome').innerText = `Duration / Count: ${ruleSet.blue[blueVal]}`;
+          document.getElementById('resultHeader').innerText = ruleSet.title;
+          document.getElementById('redOutcome').innerText = `Action: ${ruleSet.red[rVal]}`;
+          document.getElementById('blueOutcome').innerText = `Duration/Count: ${ruleSet.blue[bVal]}`;
           resultCard.style.display = 'block';
         }
       }, 70);
     }
 
-    window.onload = function() {
-      loadQuestion();
-      updateDashboard();
-    };
+    window.onload = loadQuestion;
   </script>
 </body>
 </html>
