@@ -189,6 +189,28 @@
       color: #e74c3c !important;
     }
 
+    .next-btn {
+      background: linear-gradient(135deg, #3d2a4a, #23172e);
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 12px 30px;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 15px;
+      display: none;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.2s;
+    }
+
+    .next-btn:hover {
+      background: #4f3363;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    }
+
     /* Dice Layer Styling */
     .dice-area {
       display: flex;
@@ -340,6 +362,8 @@
         <div class="question-title" id="questionText">Loading question...</div>
         
         <div class="options-grid" id="optionsGrid"></div>
+        
+        <button class="next-btn" id="nextQuestionBtn" onclick="nextQuestion()">Next Question ➔</button>
       </div>
     </div>
 
@@ -410,68 +434,28 @@
     let totalWrong = 0;
     let activeRuleKey = null;
     let currentQ = null;
+    let pendingDiceTrigger = null;
 
     const rules = {
       right3: {
         title: "3 Right in a Row — Reward",
-        red: {
-          1: "Lick ass",
-          2: "Suck cock",
-          3: "Kiss",
-          4: "Ball play",
-          5: "Lick ass & milk cock together",
-          6: "Lick nipples"
-        },
-        blue: {
-          1: "5 mins",
-          2: "10 times",
-          3: "15 seconds",
-          4: "15 times",
-          5: "10 mins",
-          6: "You choose"
-        }
+        red: { 1: "Lick ass", 2: "Suck cock", 3: "Kiss", 4: "Ball play", 5: "Lick ass & milk cock together", 6: "Lick nipples" },
+        blue: { 1: "5 mins", 2: "10 times", 3: "15 seconds", 4: "15 times", 5: "10 mins", 6: "You choose" }
       },
       wrong2: {
         title: "2 Wrong in a Row — Penance",
-        red: {
-          1: "Smack in ass",
-          2: "Pull nipples",
-          3: "Bite neck",
-          4: "Slap cock",
-          5: "Slap face",
-          6: "U choose"
-        },
-        blue: {
-          1: "10 second",
-          2: "4 times",
-          3: "U choose",
-          4: "15 times",
-          5: "5 mins",
-          6: "I choose"
-        }
+        red: { 1: "Smack in ass", 2: "Pull nipples", 3: "Bite neck", 4: "Slap cock", 5: "Slap face", 6: "U choose" },
+        blue: { 1: "10 second", 2: "4 times", 3: "U choose", 4: "15 times", 5: "5 mins", 6: "I choose" }
       },
       wrong4: {
         title: "4 Wrong in a Row — Severe Punishment",
-        red: {
-          1: "Chest smacked",
-          2: "cock pulled",
-          3: "Balls squeeze",
-          4: "Kick in balls",
-          5: "Back slapped",
-          6: "U choose"
-        },
-        blue: {
-          1: "I choose",
-          2: "6 times",
-          3: "You choose",
-          4: "5 mins",
-          5: "11 mins",
-          6: "20 times"
-        }
+        red: { 1: "Chest smacked", 2: "cock pulled", 3: "Balls squeeze", 4: "Kick in balls", 5: "Back slapped", 6: "U choose" },
+        blue: { 1: "I choose", 2: "6 times", 3: "You choose", 4: "5 mins", 5: "11 mins", 6: "20 times" }
       }
     };
 
     function loadQuestion() {
+      document.getElementById('nextQuestionBtn').style.display = 'none';
       const tierList = questionBank[currentLevel] || questionBank[1];
       currentQ = tierList[Math.floor(Math.random() * tierList.length)];
 
@@ -518,17 +502,28 @@
 
       updateDashboard();
 
-      setTimeout(() => {
-        if (currentStreak >= 3) {
-          triggerDiceLayer('right3');
-        } else if (currentStreak <= -4) {
-          triggerDiceLayer('wrong4');
-        } else if (currentStreak <= -2) {
-          triggerDiceLayer('wrong2');
-        } else {
-          loadQuestion();
-        }
-      }, 1500);
+      // Check if a streak threshold was reached
+      if (currentStreak >= 3) {
+        pendingDiceTrigger = 'right3';
+      } else if (currentStreak <= -4) {
+        pendingDiceTrigger = 'wrong4';
+      } else if (currentStreak <= -2) {
+        pendingDiceTrigger = 'wrong2';
+      } else {
+        pendingDiceTrigger = null;
+      }
+
+      // Show the Next Question button
+      document.getElementById('nextQuestionBtn').style.display = 'inline-block';
+    }
+
+    function nextQuestion() {
+      if (pendingDiceTrigger) {
+        triggerDiceLayer(pendingDiceTrigger);
+        pendingDiceTrigger = null;
+      } else {
+        loadQuestion();
+      }
     }
 
     function updateDashboard() {
