@@ -80,8 +80,8 @@
     /* Dashboard */
     .dashboard {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
       background: rgba(10, 8, 14, 0.8);
       border: 1px solid #332240;
       border-radius: 10px;
@@ -98,7 +98,7 @@
 
     .stat-label {
       color: var(--text-muted);
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
       letter-spacing: 1px;
       margin-bottom: 4px;
@@ -296,10 +296,10 @@
     .shake { animation: shake 0.4s infinite; }
     @keyframes shake {
       0% { transform: translate(1px, 1px) rotate(0deg); }
-      20% { transform: translate(-2px, -2px) rotate(-2deg); }
-      40% { transform: translate(2px, 0px) rotate(2deg); }
+      20% { transform: translate(-2px, -2px) rotate(-3deg); }
+      40% { transform: translate(2px, 0px) rotate(3deg); }
       60% { transform: translate(-1px, 2px) rotate(0deg); }
-      80% { transform: translate(2px, 1px) rotate(1deg); }
+      80% { transform: translate(2px, 1px) rotate(2deg); }
       100% { transform: translate(1px, -2px) rotate(-1deg); }
     }
   </style>
@@ -310,15 +310,19 @@
     <h1>The Innocent One's Trial</h1>
     <div class="subtitle">ᚱᚢᚾᛖ Knowledge, Fate & Consequences ᚱᚢᚾᛖ</div>
 
-    <!-- Dashboard -->
+    <!-- Dashboard Tally -->
     <div class="dashboard">
       <div class="stat-box">
-        <span class="stat-label">Difficulty</span>
-        <span class="stat-value" id="diffLevel">Level 1</span>
+        <span class="stat-label">Correct</span>
+        <span class="stat-value" id="correctCount" style="color: #2ecc71;">0</span>
       </div>
       <div class="stat-box">
-        <span class="stat-label">Intellect Rank</span>
-        <span class="stat-value" id="intellectRank">Novice</span>
+        <span class="stat-label">Wrong</span>
+        <span class="stat-value" id="wrongCount" style="color: #e74c3c;">0</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-label">Level</span>
+        <span class="stat-value" id="diffLevel">1</span>
       </div>
       <div class="stat-box">
         <span class="stat-label">Streak</span>
@@ -326,7 +330,7 @@
       </div>
     </div>
 
-    <!-- LAYER 1: ADAPTIVE QUIZ LAYER -->
+    <!-- LAYER 1: QUIZ LAYER -->
     <div id="quizPanel" class="game-panel active">
       <div class="quiz-box">
         <div class="question-header">
@@ -402,10 +406,10 @@
 
     let currentLevel = 1;
     let currentStreak = 0;
+    let totalCorrect = 0;
+    let totalWrong = 0;
     let activeRuleKey = null;
     let currentQ = null;
-
-    const rankTitles = { 1: "Novice", 2: "Casual Thinker", 3: "Sharp Scholar", 4: "Intellectual Giant", 5: "Grand Mastermind" };
 
     const rules = {
       right3: {
@@ -453,17 +457,22 @@
 
       if (isCorrect) {
         clickedBtn.classList.add('correct');
+        totalCorrect++;
         if (currentStreak < 0) currentStreak = 1;
         else currentStreak++;
+
+        // Increase level on correct streaks, max level 5
         if (currentStreak > 1 && currentLevel < 5) currentLevel++;
+        
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       } else {
         clickedBtn.classList.add('wrong');
         allBtns[currentQ.answer].classList.add('correct');
+        totalWrong++;
         if (currentStreak > 0) currentStreak = -1;
         else currentStreak--;
-        if (currentLevel > 1) currentLevel--;
-        
+
+        // Stays at current level when wrong (does not drop)
         document.body.classList.add('wrong-flash');
         setTimeout(() => document.body.classList.remove('wrong-flash'), 400);
       }
@@ -484,8 +493,9 @@
     }
 
     function updateDashboard() {
-      document.getElementById('diffLevel').innerText = `Level ${currentLevel}`;
-      document.getElementById('intellectRank').innerText = rankTitles[currentLevel];
+      document.getElementById('correctCount').innerText = totalCorrect;
+      document.getElementById('wrongCount').innerText = totalWrong;
+      document.getElementById('diffLevel').innerText = currentLevel;
       document.getElementById('streakCount').innerText = currentStreak;
     }
 
