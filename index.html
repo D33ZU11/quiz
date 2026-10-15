@@ -3,8 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yvonne's Game | Gothic Viking Fate</title>
+  <title>Master & Slave Game | Gothic Viking Fate</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Canvas Confetti Library for Right Answer Fireworks -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.min.js"></script>
   <style>
     :root {
       --bg-dark: #0a080d;
@@ -37,6 +39,20 @@
       justify-content: center;
       padding: 20px;
       line-height: 1.6;
+      transition: background-color 0.3s ease;
+    }
+
+    body.wrong-flash {
+      background-color: #3b0505 !important;
+      animation: bodyShake 0.3s ease;
+    }
+
+    @keyframes bodyShake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      50% { transform: translateX(6px); }
+      75% { transform: translateX(-4px); }
+      100% { transform: translateX(0); }
     }
 
     .container {
@@ -338,13 +354,13 @@
 <body>
 
   <div class="container">
-    <h1>Yvonne's Game</h1>
+    <h1>Master & Slave</h1>
     <div class="subtitle">ᚱᚢᚾᛖ Adaptive Knowledge & Erotic Consequence ᚱᚢᚾᛖ</div>
 
     <!-- Active Player Selector -->
     <div class="turn-tracker">
-      <button class="player-btn active" id="btnYvonne" onclick="setPlayer('Yvonne', this)">Yvonne's Turn</button>
-      <button class="player-btn" id="btnPartner" onclick="setPlayer('Partner', this)">Partner's Turn</button>
+      <button class="player-btn active" id="btnMaster" onclick="setPlayer('Master', this)">Master's Turn</button>
+      <button class="player-btn" id="btnSlave" onclick="setPlayer('Slave', this)">Slave's Turn</button>
     </div>
 
     <!-- Intelligence & Streak Dashboard -->
@@ -413,109 +429,34 @@
   <script>
     // General Knowledge Question Bank (Tiered Level 1 to 5)
     const questionBank = {
-      1: [ // Level 1: Casual / Easy
-        {
-          category: "Geography",
-          q: "What is the capital city of Scotland?",
-          options: ["Glasgow", "Edinburgh", "Aberdeen", "Dundee"],
-          answer: 1
-        },
-        {
-          category: "Pop Culture",
-          q: "Which element on the periodic table has the chemical symbol 'O'?",
-          options: ["Gold", "Osmium", "Oxygen", "Zinc"],
-          answer: 2
-        },
-        {
-          category: "General Knowledge",
-          q: "How many sides does a standard hexagon have?",
-          options: ["5", "6", "7", "8"],
-          answer: 1
-        }
+      1: [
+        { category: "Geography", q: "What is the capital city of Scotland?", options: ["Glasgow", "Edinburgh", "Aberdeen", "Dundee"], answer: 1 },
+        { category: "Pop Culture", q: "Which element on the periodic table has the chemical symbol 'O'?", options: ["Gold", "Osmium", "Oxygen", "Zinc"], answer: 2 },
+        { category: "General Knowledge", q: "How many sides does a standard hexagon have?", options: ["5", "6", "7", "8"], answer: 1 }
       ],
-      2: [ // Level 2: Moderate
-        {
-          category: "History",
-          q: "In which year did the Battle of Hastings take place in England?",
-          options: ["1066", "1215", "1415", "1588"],
-          answer: 0
-        },
-        {
-          category: "Nature & Animals",
-          q: "What is the largest mammal currently living on Earth?",
-          options: ["African Elephant", "Blue Whale", "Colossal Squid", "Giraffe"],
-          answer: 1
-        },
-        {
-          category: "Literature",
-          q: "Who wrote the classic Gothic novel 'Frankenstein'?",
-          options: ["Bram Stoker", "Mary Shelley", "Jane Austen", "Charles Dickens"],
-          answer: 1
-        }
+      2: [
+        { category: "History", q: "In which year did the Battle of Hastings take place in England?", options: ["1066", "1215", "1415", "1588"], answer: 0 },
+        { category: "Nature & Animals", q: "What is the largest mammal currently living on Earth?", options: ["African Elephant", "Blue Whale", "Colossal Squid", "Giraffe"], answer: 1 },
+        { category: "Literature", q: "Who wrote the classic Gothic novel 'Frankenstein'?", options: ["Bram Stoker", "Mary Shelley", "Jane Austen", "Charles Dickens"], answer: 1 }
       ],
-      3: [ // Level 3: Challenging
-        {
-          category: "Human Anatomy",
-          q: "Which organ in the human body consumes roughly 20% of the body's total oxygen intake?",
-          options: ["Lungs", "Heart", "Liver", "Brain"],
-          answer: 3
-        },
-        {
-          category: "World History",
-          q: "Which ancient civilization constructed the city of Machu Picchu high in the Andes?",
-          options: ["Aztecs", "Mayans", "Incas", "Toltecs"],
-          answer: 2
-        },
-        {
-          category: "Physics & Chemistry",
-          q: "What is the hardest naturally occurring substance found on Earth?",
-          options: ["Titanium", "Diamond", "Quartz", "Graphene"],
-          answer: 1
-        }
+      3: [
+        { category: "Human Anatomy", q: "Which organ in the human body consumes roughly 20% of the body's total oxygen intake?", options: ["Lungs", "Heart", "Liver", "Brain"], answer: 3 },
+        { category: "World History", q: "Which ancient civilization constructed the city of Machu Picchu high in the Andes?", options: ["Aztecs", "Mayans", "Incas", "Toltecs"], answer: 2 },
+        { category: "Physics & Chemistry", q: "What is the hardest naturally occurring substance found on Earth?", options: ["Titanium", "Diamond", "Quartz", "Graphene"], answer: 1 }
       ],
-      4: [ // Level 4: Advanced
-        {
-          category: "Astronomy & Physics",
-          q: "What is the theoretical boundary surrounding a black hole beyond which nothing can escape?",
-          options: ["Photon Sphere", "Singularity", "Event Horizon", "Accretion Disk"],
-          answer: 2
-        },
-        {
-          category: "World History",
-          q: "Who was the first Emperor of a unified China, famous for his Terracotta Army?",
-          options: ["Qin Shi Huang", "Kublai Khan", "Sun Tzu", "Emperor Wu of Han"],
-          answer: 0
-        },
-        {
-          category: "Classical Literature",
-          q: "In Norse mythology, what is the name of the great hall ruled over by the god Odin?",
-          options: ["Asgard", "Valhalla", "Midgard", "Niflheim"],
-          answer: 1
-        }
+      4: [
+        { category: "Astronomy & Physics", q: "What is the theoretical boundary surrounding a black hole beyond which nothing can escape?", options: ["Photon Sphere", "Singularity", "Event Horizon", "Accretion Disk"], answer: 2 },
+        { category: "World History", q: "Who was the first Emperor of a unified China, famous for his Terracotta Army?", options: ["Qin Shi Huang", "Kublai Khan", "Sun Tzu", "Emperor Wu of Han"], answer: 0 },
+        { category: "Classical Literature", q: "In Norse mythology, what is the name of the great hall ruled over by the god Odin?", options: ["Asgard", "Valhalla", "Midgard", "Niflheim"], answer: 1 }
       ],
-      5: [ // Level 5: Genius / Mastermind
-        {
-          category: "Philosophy & Science",
-          q: "Which ancient philosopher formulated the famous line 'I think, therefore I am' (Cogito, ergo sum)?",
-          options: ["Spinoza", "Immanuel Kant", "René Descartes", "Friedrich Nietzsche"],
-          answer: 2
-        },
-        {
-          category: "Botany & Science",
-          q: "What pigment gives red, purple, and blue plants their vibrant colors and acts as an antioxidant?",
-          options: ["Chlorophyll", "Anthocyanin", "Carotenoid", "Xanthophyll"],
-          answer: 1
-        },
-        {
-          category: "History & Antiquity",
-          q: "The Roman Empire reached its greatest geographical expanse under which Emperor in 117 AD?",
-          options: ["Augustus", "Trajan", "Hadrian", "Marcus Aurelius"],
-          answer: 1
-        }
+      5: [
+        { category: "Philosophy & Science", q: "Which ancient philosopher formulated the famous line 'I think, therefore I am' (Cogito, ergo sum)?", options: ["Spinoza", "Immanuel Kant", "René Descartes", "Friedrich Nietzsche"], answer: 2 },
+        { category: "Botany & Science", q: "What pigment gives red, purple, and blue plants their vibrant colors and acts as an antioxidant?", options: ["Chlorophyll", "Anthocyanin", "Carotenoid", "Xanthophyll"], answer: 1 },
+        { category: "History & Antiquity", q: "The Roman Empire reached its greatest geographical expanse under which Emperor in 117 AD?", options: ["Augustus", "Trajan", "Hadrian", "Marcus Aurelius"], answer: 1 }
       ]
     };
 
-    let currentPlayer = 'Yvonne';
+    let currentPlayer = 'Master';
     let currentLevel = 1;
     let currentStreak = 0;
     let totalScore = 0;
@@ -575,6 +516,23 @@
       });
     }
 
+    function triggerFireworks() {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#d4af37', '#ff3b3b', '#00bfff', '#ffffff']
+      });
+    }
+
+    function triggerSadEffect() {
+      const body = document.body;
+      body.classList.add('wrong-flash');
+      setTimeout(() => {
+        body.classList.remove('wrong-flash');
+      }, 400);
+    }
+
     function selectOption(idx, clickedBtn) {
       const allBtns = document.querySelectorAll('.option-btn');
       allBtns.forEach(b => b.disabled = true);
@@ -587,16 +545,16 @@
         if (currentStreak < 0) currentStreak = 1;
         else currentStreak++;
 
-        // Increase level if performing well
         if (currentStreak > 1 && currentLevel < 5) currentLevel++;
+        triggerFireworks();
       } else {
         clickedBtn.classList.add('wrong');
         allBtns[currentQ.answer].classList.add('correct');
         if (currentStreak > 0) currentStreak = -1;
         else currentStreak--;
 
-        // Drop difficulty level on error
         if (currentLevel > 1) currentLevel--;
+        triggerSadEffect();
       }
 
       updateDashboard();
@@ -611,7 +569,7 @@
         } else {
           loadQuestion();
         }
-      }, 1400);
+      }, 1500);
     }
 
     function updateDashboard() {
