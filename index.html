@@ -276,7 +276,6 @@
         </div>
         <div class="question-title" id="questionText">Loading...</div>
         <div class="options-grid" id="optionsGrid"></div>
-        <!-- Single button that dynamically sets its behavior -->
         <button class="next-btn" id="nextQuestionBtn">Next Question ➔</button>
       </div>
     </div>
@@ -356,7 +355,9 @@
     };
 
     function loadQuestion() {
-      document.getElementById('nextQuestionBtn').style.display = 'none';
+      // Hide the button when loading a new question
+      const nextBtn = document.getElementById('nextQuestionBtn');
+      nextBtn.style.display = 'none';
 
       const tierList = questionBank[currentLevel] || questionBank[1];
       currentQ = tierList[Math.floor(Math.random() * tierList.length)];
@@ -377,19 +378,18 @@
     }
 
     function selectOption(idx, clickedBtn) {
-      // Disable all options immediately
+      // 1. Disable all option buttons immediately
       const allBtns = document.querySelectorAll('.option-btn');
       allBtns.forEach(b => b.disabled = true);
 
       const isCorrect = (idx === currentQ.answer);
-      const nextBtn = document.getElementById('nextQuestionBtn');
 
+      // 2. Update stats and scores
       if (isCorrect) {
         clickedBtn.classList.add('correct');
         totalCorrect++;
         streak = streak < 0 ? 1 : streak + 1;
         if (streak >= 3 && currentLevel < 5) currentLevel++;
-        confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
       } else {
         clickedBtn.classList.add('wrong');
         allBtns[currentQ.answer].classList.add('correct');
@@ -399,18 +399,30 @@
 
       updateDashboard();
 
-      // Directly hook up the button's behavior based on current streak
+      // 3. SHOW AND PROGRAM THE BUTTON IMMEDIATELY BEFORE ANY OTHER EFFECTS
+      const nextBtn = document.getElementById('nextQuestionBtn');
       nextBtn.style.display = 'inline-block';
 
       if (streak >= 3) {
         nextBtn.innerText = 'Cast Reward Dice ➔';
-        nextBtn.onclick = () => triggerDice('right3');
+        nextBtn.onclick = function() { triggerDice('right3'); };
       } else if (streak <= -2) {
         nextBtn.innerText = 'Cast Penance Dice ➔';
-        nextBtn.onclick = () => triggerDice('wrong2');
+        nextBtn.onclick = function() { triggerDice('wrong2'); };
       } else {
         nextBtn.innerText = 'Next Question ➔';
-        nextBtn.onclick = () => loadQuestion();
+        nextBtn.onclick = function() { loadQuestion(); };
+      }
+
+      // 4. Safely run confetti last so if it fails, it can't block the button
+      if (isCorrect) {
+        try {
+          if (typeof confetti === 'function') {
+            confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
+          }
+        } catch (e) {
+          console.warn("Confetti effect skipped:", e);
+        }
       }
     }
 
