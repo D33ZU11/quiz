@@ -61,7 +61,6 @@
       margin-bottom: 25px;
     }
 
-    /* Dashboard */
     .dashboard {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -94,11 +93,9 @@
       font-size: 1rem;
     }
 
-    /* Panels */
     .game-panel { display: none; }
     .game-panel.active { display: block; }
 
-    /* Quiz Box Styling */
     .quiz-box {
       background: rgba(14, 10, 20, 0.85);
       border: 1px solid #422d52;
@@ -182,7 +179,6 @@
       background: #4f3363;
     }
 
-    /* Dice Layer Styling */
     .dice-area {
       display: flex;
       justify-content: space-around;
@@ -356,11 +352,6 @@
         title: "2 Wrong in a Row — Penance",
         red: { 1: "Smack in ass", 2: "Pull nipples", 3: "Bite neck", 4: "Slap cock", 5: "Slap face", 6: "U choose" },
         blue: { 1: "10 second", 2: "4 times", 3: "U choose", 4: "15 times", 5: "5 mins", 6: "I choose" }
-      },
-      wrong4: {
-        title: "4 Wrong in a Row — Severe Punishment",
-        red: { 1: "Chest smacked", 2: "cock pulled", 3: "Balls squeeze", 4: "Kick in balls", 5: "Back slapped", 6: "U choose" },
-        blue: { 1: "I choose", 2: "6 times", 3: "You choose", 4: "5 mins", 5: "11 mins", 6: "20 times" }
       }
     };
 
@@ -396,7 +387,8 @@
         if (streak < 0) streak = 1;
         else streak++;
 
-        if (streak > 1 && currentLevel < 5) currentLevel++;
+        if (streak >= 3 && currentLevel < 5) currentLevel++;
+
         confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
       } else {
         clickedBtn.classList.add('wrong');
@@ -408,18 +400,20 @@
 
       updateDashboard();
 
-      // Set trigger conditions
+      // Set trigger conditions (only correct answers trigger dice)
       if (streak >= 3) {
         pendingTrigger = 'right3';
-      } else if (streak <= -4) {
-        pendingTrigger = 'wrong4';
       } else if (streak <= -2) {
         pendingTrigger = 'wrong2';
       } else {
         pendingTrigger = null;
       }
 
-      document.getElementById('nextQuestionBtn').style.display = 'inline-block';
+      if (isCorrect) {
+        document.getElementById('nextQuestionBtn').style.display = 'none'; // no next question after correct
+      } else {
+        document.getElementById('nextQuestionBtn').style.display = 'inline-block';
+      }
     }
 
     function proceedNext() {
@@ -427,6 +421,8 @@
         triggerDice(pendingTrigger);
         pendingTrigger = null;
       } else {
+        // If we just did a wrong answer, show next question (streak reset)
+        streak = 0;
         loadQuestion();
       }
     }
