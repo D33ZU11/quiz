@@ -276,7 +276,8 @@
         </div>
         <div class="question-title" id="questionText">Loading...</div>
         <div class="options-grid" id="optionsGrid"></div>
-        <button class="next-btn" id="nextQuestionBtn" onclick="proceedNext()">Next Question ➔</button>
+        <!-- Single button that dynamically sets its behavior -->
+        <button class="next-btn" id="nextQuestionBtn">Next Question ➔</button>
       </div>
     </div>
 
@@ -340,7 +341,6 @@
     let totalWrong = 0;
     let currentQ = null;
     let activeRuleKey = null;
-    let pendingTrigger = null;
 
     const rules = {
       right3: {
@@ -357,6 +357,7 @@
 
     function loadQuestion() {
       document.getElementById('nextQuestionBtn').style.display = 'none';
+
       const tierList = questionBank[currentLevel] || questionBank[1];
       currentQ = tierList[Math.floor(Math.random() * tierList.length)];
 
@@ -376,54 +377,40 @@
     }
 
     function selectOption(idx, clickedBtn) {
+      // Disable all options immediately
       const allBtns = document.querySelectorAll('.option-btn');
       allBtns.forEach(b => b.disabled = true);
 
       const isCorrect = (idx === currentQ.answer);
+      const nextBtn = document.getElementById('nextQuestionBtn');
 
       if (isCorrect) {
         clickedBtn.classList.add('correct');
         totalCorrect++;
-        if (streak < 0) streak = 1;
-        else streak++;
-
+        streak = streak < 0 ? 1 : streak + 1;
         if (streak >= 3 && currentLevel < 5) currentLevel++;
-
         confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
       } else {
         clickedBtn.classList.add('wrong');
         allBtns[currentQ.answer].classList.add('correct');
         totalWrong++;
-        if (streak > 0) streak = -1;
-        else streak--;
+        streak = streak > 0 ? -1 : streak - 1;
       }
 
       updateDashboard();
 
-      // Set trigger conditions (only correct answers trigger dice)
+      // Directly hook up the button's behavior based on current streak
+      nextBtn.style.display = 'inline-block';
+
       if (streak >= 3) {
-        pendingTrigger = 'right3';
+        nextBtn.innerText = 'Cast Reward Dice ➔';
+        nextBtn.onclick = () => triggerDice('right3');
       } else if (streak <= -2) {
-        pendingTrigger = 'wrong2';
+        nextBtn.innerText = 'Cast Penance Dice ➔';
+        nextBtn.onclick = () => triggerDice('wrong2');
       } else {
-        pendingTrigger = null;
-      }
-
-      if (isCorrect) {
-        document.getElementById('nextQuestionBtn').style.display = 'none'; // no next question after correct
-      } else {
-        document.getElementById('nextQuestionBtn').style.display = 'inline-block';
-      }
-    }
-
-    function proceedNext() {
-      if (pendingTrigger) {
-        triggerDice(pendingTrigger);
-        pendingTrigger = null;
-      } else {
-        // If we just did a wrong answer, show next question (streak reset)
-        streak = 0;
-        loadQuestion();
+        nextBtn.innerText = 'Next Question ➔';
+        nextBtn.onclick = () => loadQuestion();
       }
     }
 
