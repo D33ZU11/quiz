@@ -8,20 +8,25 @@
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.min.js"></script>
   <style>
     :root {
-      --bg-dark: #0a080d;
-      --card-bg: rgba(22, 17, 28, 0.95);
-      --gold: #d4af37;
-      --red-accent: #9e0b0b;
-      --blue-accent: #1e4a7a;
-      --text-light: #f0eaf5;
-      --text-muted: #b8a8ca;
+      --bg-dark: #070509;
+      --card-bg: rgba(18, 12, 24, 0.96);
+      --gold: #f3e5ab;
+      --gold-bright: #ffd700;
+      --red-accent: #8b0000;
+      --red-glow: #ff2a2a;
+      --blue-accent: #1e3f66;
+      --blue-glow: #00bfff;
+      --text-light: #f7f2fc;
+      --text-muted: #c2b2d2;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: var(--bg-dark);
-      background-image: radial-gradient(circle at center, #1c1128 0%, #050407 100%);
+      background-image: 
+        radial-gradient(circle at 50% 20%, #2a1235 0%, #070509 70%),
+        repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.015) 0px, rgba(212, 175, 55, 0.015) 2px, transparent 2px, transparent 40px);
       color: var(--text-light);
       font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
@@ -30,47 +35,67 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
+      overflow-x: hidden;
     }
 
     .container {
-      max-width: 680px;
+      max-width: 700px;
       width: 100%;
       background: var(--card-bg);
-      border: 2px solid #3d2a4a;
-      box-shadow: 0 0 35px rgba(0,0,0,0.9);
-      border-radius: 16px;
-      padding: 30px;
+      border: 2px solid #5a3d6e;
+      box-shadow: 0 0 50px rgba(0,0,0,0.95), inset 0 0 25px rgba(212, 175, 55, 0.12);
+      border-radius: 18px;
+      padding: 35px;
       text-align: center;
+      position: relative;
+    }
+
+    /* Ambient Rune Watermark */
+    .container::before {
+      content: "ᚱᚢᚾᛖ";
+      position: absolute;
+      top: 15px;
+      right: 25px;
+      font-family: 'Cinzel', serif;
+      font-size: 1.2rem;
+      color: rgba(212, 175, 55, 0.25);
+      letter-spacing: 5px;
+      pointer-events: none;
     }
 
     h1 {
       font-family: 'Cinzel', serif;
-      font-weight: 700;
+      font-weight: 900;
       color: var(--gold);
-      font-size: 2.2rem;
-      letter-spacing: 2px;
+      font-size: 2.3rem;
+      letter-spacing: 3px;
       margin-bottom: 5px;
-      text-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+      text-shadow: 0 0 15px rgba(243, 229, 171, 0.5);
+      background: linear-gradient(180deg, #fff 0%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .subtitle {
       font-family: 'Cinzel', serif;
-      font-size: 0.95rem;
-      letter-spacing: 1px;
+      font-size: 1rem;
+      letter-spacing: 2px;
       color: var(--text-muted);
       margin-bottom: 25px;
+      text-transform: uppercase;
     }
 
+    /* Luxury Dashboard Tally */
     .dashboard {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      background: rgba(10, 8, 14, 0.8);
-      border: 1px solid #332240;
-      border-radius: 10px;
-      padding: 12px;
+      gap: 10px;
+      background: rgba(10, 6, 15, 0.9);
+      border: 1px solid #4a305e;
+      border-radius: 12px;
+      padding: 15px;
       margin-bottom: 25px;
-      font-size: 0.85rem;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
     }
 
     .stat-box {
@@ -81,27 +106,36 @@
 
     .stat-label {
       color: var(--text-muted);
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.5px;
       margin-bottom: 4px;
+      font-weight: 600;
     }
 
     .stat-value {
-      color: var(--gold);
+      color: var(--gold-bright);
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 1.2rem;
+      text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
     }
 
     .game-panel { display: none; }
-    .game-panel.active { display: block; }
+    .game-panel.active { display: block; animation: fadeIn 0.4s ease-in-out; }
 
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Quiz Box Styling */
     .quiz-box {
-      background: rgba(14, 10, 20, 0.85);
-      border: 1px solid #422d52;
-      border-radius: 12px;
-      padding: 25px;
+      background: rgba(14, 9, 20, 0.9);
+      border: 1px solid #503766;
+      border-radius: 14px;
+      padding: 30px;
       margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
 
     .question-header {
@@ -109,154 +143,200 @@
       justify-content: space-between;
       color: var(--gold);
       font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 12px;
+      font-weight: 700;
+      margin-bottom: 15px;
       text-transform: uppercase;
+      letter-spacing: 1.5px;
     }
 
     .question-title {
       font-family: 'Cinzel', serif;
-      font-size: 1.25rem;
+      font-size: 1.35rem;
       color: #ffffff;
-      margin-bottom: 20px;
-      line-height: 1.5;
+      margin-bottom: 25px;
+      line-height: 1.6;
+      font-weight: 700;
     }
 
     .options-grid {
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-bottom: 20px;
+      gap: 12px;
+      margin-bottom: 25px;
     }
 
     .option-btn {
-      background: #1b1324;
-      border: 1px solid #4a345c;
+      background: linear-gradient(135deg, #22172e, #140d1c);
+      border: 1px solid #5a3d73;
       color: var(--text-light);
-      padding: 14px 18px;
-      border-radius: 8px;
+      padding: 16px 20px;
+      border-radius: 10px;
       font-family: 'Montserrat', sans-serif;
-      font-size: 0.95rem;
+      font-size: 1rem;
+      font-weight: 500;
       cursor: pointer;
       text-align: left;
-      transition: all 0.2s;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
     }
 
     .option-btn:hover {
       border-color: var(--gold);
-      background: #2b1d3a;
+      background: linear-gradient(135deg, #322144, #1b1126);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.15);
     }
 
     .option-btn.correct {
-      background: #0d381e !important;
+      background: linear-gradient(135deg, #0f4a26, #072613) !important;
       border-color: #2ecc71 !important;
       color: #2ecc71 !important;
-      font-weight: bold;
+      font-weight: 700;
+      box-shadow: 0 0 20px rgba(46, 204, 113, 0.3) !important;
     }
 
     .option-btn.wrong {
-      background: #420f0f !important;
+      background: linear-gradient(135deg, #591212, #290505) !important;
       border-color: #e74c3c !important;
       color: #e74c3c !important;
+      box-shadow: 0 0 20px rgba(231, 76, 60, 0.3) !important;
     }
 
     .next-btn {
-      background: linear-gradient(135deg, #3d2a4a, #23172e);
-      border: 1px solid var(--gold);
+      background: linear-gradient(135deg, #593c70, #332042);
+      border: 2px solid var(--gold);
       color: var(--gold);
       font-family: 'Cinzel', serif;
       font-weight: 700;
-      font-size: 1.05rem;
-      padding: 12px 30px;
-      border-radius: 25px;
+      font-size: 1.1rem;
+      padding: 14px 35px;
+      border-radius: 30px;
       cursor: pointer;
       display: none;
-      margin-top: 15px;
+      margin-top: 10px;
       text-transform: uppercase;
+      letter-spacing: 2px;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+      transition: all 0.3s ease;
     }
 
     .next-btn:hover {
-      background: #4f3363;
+      background: linear-gradient(135deg, #6d4b87, #422a55);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+      transform: scale(1.03);
     }
 
+    /* Dice Panel Styling */
     .dice-area {
       display: flex;
       justify-content: space-around;
-      margin: 25px 0;
+      margin: 30px 0;
       gap: 20px;
     }
 
     .dice-box {
       flex: 1;
-      background: rgba(10, 8, 14, 0.7);
-      border-radius: 12px;
+      background: rgba(10, 6, 15, 0.85);
+      border-radius: 14px;
       padding: 20px 10px;
-      border: 1px solid #332240;
+      border: 1px solid #4a305e;
+      box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
     }
 
     .dice {
-      width: 80px;
-      height: 80px;
+      width: 90px;
+      height: 90px;
       margin: 15px auto;
-      border-radius: 14px;
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.4rem;
+      font-size: 2.8rem;
       font-weight: 700;
       font-family: 'Cinzel', serif;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(255,255,255,0.1);
     }
 
     .dice-red {
-      background: linear-gradient(145deg, #500000, #1a0000);
-      border: 2px solid var(--red-accent);
+      background: linear-gradient(145deg, #6b0000, #260000);
+      border: 2px solid var(--red-glow);
       color: #ffcccc;
+      text-shadow: 0 0 12px var(--red-glow);
     }
 
     .dice-blue {
-      background: linear-gradient(145deg, #0a2540, #020b14);
-      border: 2px solid var(--blue-accent);
+      background: linear-gradient(145deg, #0d325c, #030f1c);
+      border: 2px solid var(--blue-glow);
       color: #ccf2ff;
+      text-shadow: 0 0 12px var(--blue-glow);
     }
 
     .roll-btn {
-      background: linear-gradient(180deg, #8b0000 0%, #4a0000 100%);
+      background: linear-gradient(180deg, #9e0b0b 0%, #4a0000 100%);
       border: 2px solid var(--gold);
       color: var(--gold);
       font-family: 'Cinzel', serif;
       font-weight: 700;
-      font-size: 1.2rem;
-      padding: 15px 40px;
-      border-radius: 30px;
+      font-size: 1.3rem;
+      padding: 16px 45px;
+      border-radius: 35px;
       cursor: pointer;
       text-transform: uppercase;
+      letter-spacing: 2px;
+      box-shadow: 0 0 30px rgba(158, 11, 11, 0.7);
+      transition: all 0.3s ease;
+    }
+
+    .roll-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 40px rgba(212, 175, 55, 0.6);
     }
 
     .result-card {
-      margin-top: 25px;
-      background: rgba(15, 10, 20, 0.95);
-      border: 1px dashed var(--gold);
-      border-radius: 10px;
-      padding: 22px;
+      margin-top: 30px;
+      background: rgba(14, 9, 20, 0.95);
+      border: 2px dashed var(--gold);
+      border-radius: 14px;
+      padding: 25px;
       display: none;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      animation: fadeIn 0.5s ease;
     }
 
     .action-btn {
-      background: #23172e;
+      background: linear-gradient(135deg, #3d2a4a, #23172e);
       border: 1px solid var(--gold);
       color: var(--gold);
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 600;
-      padding: 12px 24px;
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      padding: 12px 28px;
       border-radius: 8px;
       cursor: pointer;
-      margin-top: 15px;
+      margin-top: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.2s;
+    }
+
+    .action-btn:hover {
+      background: #543b66;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+    }
+
+    /* Wrong screen shake */
+    @keyframes screenShake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+    .shake-anim {
+      animation: screenShake 0.4s ease-in-out;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
+  <div class="container" id="mainContainer">
     <h1>The Innocent One's Trial</h1>
     <div class="subtitle">ᚱᚢᚾᛖ Knowledge, Fate & Consequences ᚱᚢᚾᛖ</div>
 
@@ -282,23 +362,23 @@
 
     <!-- DICE PANEL -->
     <div id="dicePanel" class="game-panel">
-      <div style="font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 15px; font-size: 1.15rem;" id="diceInstruction">Fate is sealed! Cast your dice.</div>
+      <div style="font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 20px; font-size: 1.25rem;" id="diceInstruction">Fate is sealed! Cast your dice.</div>
       <div class="dice-area">
         <div class="dice-box">
-          <div style="color: #ff6b6b; font-family: 'Cinzel', serif;">Action (Red)</div>
+          <div style="color: #ff6b6b; font-family: 'Cinzel', serif; font-weight: 600;">Action (Red)</div>
           <div class="dice dice-red" id="diceRed">ᚠ</div>
         </div>
         <div class="dice-box">
-          <div style="color: #64dfdf; font-family: 'Cinzel', serif;">Duration (Blue)</div>
+          <div style="color: #64dfdf; font-family: 'Cinzel', serif; font-weight: 600;">Duration (Blue)</div>
           <div class="dice dice-blue" id="diceBlue">ᚢ</div>
         </div>
       </div>
       <button class="roll-btn" onclick="rollDice()">Cast the Dice</button>
       <div class="result-card" id="resultCard">
-        <h3 id="resultHeader" style="font-family:'Cinzel',serif; color:var(--gold); margin-bottom:10px;">Fate Has Decided</h3>
-        <div class="outcome-text" style="font-size: 1.1rem; line-height: 1.6;">
-          <span id="redOutcome" style="color:#ff6b6b; font-weight:600;"></span><br>
-          <span id="blueOutcome" style="color:#64dfdf; font-weight:600;"></span>
+        <h3 id="resultHeader" style="font-family:'Cinzel',serif; color:var(--gold); font-size: 1.4rem; margin-bottom:12px;">Fate Has Decided</h3>
+        <div class="outcome-text" style="font-size: 1.2rem; line-height: 1.7;">
+          <span id="redOutcome" style="color:#ff6b6b; font-weight:700;"></span><br>
+          <span id="blueOutcome" style="color:#64dfdf; font-weight:700;"></span>
         </div>
         <button class="action-btn" onclick="resetToQuiz()">Return to Trial</button>
       </div>
@@ -330,155 +410,3 @@
       5: [
         { category: "Philosophy & Science", q: "Which ancient philosopher formulated the famous line 'I think, therefore I am' (Cogito, ergo sum)?", options: ["Spinoza", "Immanuel Kant", "René Descartes", "Friedrich Nietzsche"], answer: 2 },
         { category: "Botany & Science", q: "What pigment gives red, purple, and blue plants their vibrant colors and acts as an antioxidant?", options: ["Chlorophyll", "Anthocyanin", "Carotenoid", "Xanthophyll"], answer: 1 },
-        { category: "History & Antiquity", q: "The Roman Empire reached its greatest geographical expanse under which Emperor in 117 AD?", options: ["Augustus", "Trajan", "Hadrian", "Marcus Aurelius"], answer: 1 }
-      ]
-    };
-
-    let currentLevel = 1;
-    let streak = 0;
-    let totalCorrect = 0;
-    let totalWrong = 0;
-    let currentQ = null;
-    let activeRuleKey = null;
-
-    const rules = {
-      right3: {
-        title: "3 Right in a Row — Reward",
-        red: { 1: "Lick ass", 2: "Suck cock", 3: "Kiss", 4: "Ball play", 5: "Lick ass & milk cock together", 6: "Lick nipples" },
-        blue: { 1: "5 mins", 2: "10 times", 3: "15 seconds", 4: "15 times", 5: "10 mins", 6: "You choose" }
-      },
-      wrong2: {
-        title: "2 Wrong in a Row — Penance",
-        red: { 1: "Smack in ass", 2: "Pull nipples", 3: "Bite neck", 4: "Slap cock", 5: "Slap face", 6: "U choose" },
-        blue: { 1: "10 second", 2: "4 times", 3: "U choose", 4: "15 times", 5: "5 mins", 6: "I choose" }
-      }
-    };
-
-    function loadQuestion() {
-      // Hide the button when loading a new question
-      const nextBtn = document.getElementById('nextQuestionBtn');
-      nextBtn.style.display = 'none';
-
-      const tierList = questionBank[currentLevel] || questionBank[1];
-      currentQ = tierList[Math.floor(Math.random() * tierList.length)];
-
-      document.getElementById('questionCategory').innerText = currentQ.category;
-      document.getElementById('questionTierText').innerText = `Tier: ${currentLevel}`;
-      document.getElementById('questionText').innerText = currentQ.q;
-
-      const grid = document.getElementById('optionsGrid');
-      grid.innerHTML = '';
-      currentQ.options.forEach((opt, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'option-btn';
-        btn.innerHTML = `<b>${String.fromCharCode(65 + idx)}.</b> ${opt}`;
-        btn.onclick = () => selectOption(idx, btn);
-        grid.appendChild(btn);
-      });
-    }
-
-    function selectOption(idx, clickedBtn) {
-      // 1. Disable all option buttons immediately
-      const allBtns = document.querySelectorAll('.option-btn');
-      allBtns.forEach(b => b.disabled = true);
-
-      const isCorrect = (idx === currentQ.answer);
-
-      // 2. Update stats and scores
-      if (isCorrect) {
-        clickedBtn.classList.add('correct');
-        totalCorrect++;
-        streak = streak < 0 ? 1 : streak + 1;
-        if (streak >= 3 && currentLevel < 5) currentLevel++;
-      } else {
-        clickedBtn.classList.add('wrong');
-        allBtns[currentQ.answer].classList.add('correct');
-        totalWrong++;
-        streak = streak > 0 ? -1 : streak - 1;
-      }
-
-      updateDashboard();
-
-      // 3. SHOW AND PROGRAM THE BUTTON IMMEDIATELY BEFORE ANY OTHER EFFECTS
-      const nextBtn = document.getElementById('nextQuestionBtn');
-      nextBtn.style.display = 'inline-block';
-
-      if (streak >= 3) {
-        nextBtn.innerText = 'Cast Reward Dice ➔';
-        nextBtn.onclick = function() { triggerDice('right3'); };
-      } else if (streak <= -2) {
-        nextBtn.innerText = 'Cast Penance Dice ➔';
-        nextBtn.onclick = function() { triggerDice('wrong2'); };
-      } else {
-        nextBtn.innerText = 'Next Question ➔';
-        nextBtn.onclick = function() { loadQuestion(); };
-      }
-
-      // 4. Safely run confetti last so if it fails, it can't block the button
-      if (isCorrect) {
-        try {
-          if (typeof confetti === 'function') {
-            confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
-          }
-        } catch (e) {
-          console.warn("Confetti effect skipped:", e);
-        }
-      }
-    }
-
-    function updateDashboard() {
-      document.getElementById('correctCount').innerText = totalCorrect;
-      document.getElementById('wrongCount').innerText = totalWrong;
-      document.getElementById('diffLevel').innerText = currentLevel;
-      document.getElementById('streakCount').innerText = streak;
-    }
-
-    function triggerDice(ruleKey) {
-      activeRuleKey = ruleKey;
-      document.getElementById('quizPanel').classList.remove('active');
-      document.getElementById('dicePanel').classList.add('active');
-      document.getElementById('diceInstruction').innerText = `Triggered: ${rules[ruleKey].title}! Cast the dice.`;
-      document.getElementById('resultCard').style.display = 'none';
-      document.getElementById('diceRed').innerText = 'ᚠ';
-      document.getElementById('diceBlue').innerText = 'ᚢ';
-    }
-
-    function resetToQuiz() {
-      streak = 0;
-      updateDashboard();
-      document.getElementById('dicePanel').classList.remove('active');
-      document.getElementById('quizPanel').classList.add('active');
-      loadQuestion();
-    }
-
-    function rollDice() {
-      const redDice = document.getElementById('diceRed');
-      const blueDice = document.getElementById('diceBlue');
-      const resultCard = document.getElementById('resultCard');
-      resultCard.style.display = 'none';
-
-      let count = 0;
-      const interval = setInterval(() => {
-        redDice.innerText = Math.floor(Math.random() * 6) + 1;
-        blueDice.innerText = Math.floor(Math.random() * 6) + 1;
-        count++;
-        if (count > 10) {
-          clearInterval(interval);
-          const rVal = Math.floor(Math.random() * 6) + 1;
-          const bVal = Math.floor(Math.random() * 6) + 1;
-          redDice.innerText = rVal;
-          blueDice.innerText = bVal;
-
-          const ruleSet = rules[activeRuleKey];
-          document.getElementById('resultHeader').innerText = ruleSet.title;
-          document.getElementById('redOutcome').innerText = `Action: ${ruleSet.red[rVal]}`;
-          document.getElementById('blueOutcome').innerText = `Duration/Count: ${ruleSet.blue[bVal]}`;
-          resultCard.style.display = 'block';
-        }
-      }, 70);
-    }
-
-    window.onload = loadQuestion;
-  </script>
-</body>
-</html>
