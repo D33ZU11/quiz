@@ -410,3 +410,157 @@
       5: [
         { category: "Philosophy & Science", q: "Which ancient philosopher formulated the famous line 'I think, therefore I am' (Cogito, ergo sum)?", options: ["Spinoza", "Immanuel Kant", "René Descartes", "Friedrich Nietzsche"], answer: 2 },
         { category: "Botany & Science", q: "What pigment gives red, purple, and blue plants their vibrant colors and acts as an antioxidant?", options: ["Chlorophyll", "Anthocyanin", "Carotenoid", "Xanthophyll"], answer: 1 },
+        { category: "History & Antiquity", q: "The Roman Empire reached its greatest geographical expanse under which Emperor in 117 AD?", options: ["Augustus", "Trajan", "Hadrian", "Marcus Aurelius"], answer: 1 }
+      ]
+    };
+
+    let currentLevel = 1;
+    let streak = 0;
+    let totalCorrect = 0;
+    let totalWrong = 0;
+    let currentQ = null;
+    let activeRuleKey = null;
+
+    const rules = {
+      right3: {
+        title: "3 Right in a Row — Reward",
+        red: { 1: "Lick ass", 2: "Suck cock", 3: "Kiss", 4: "Ball play", 5: "Lick ass & milk cock together", 6: "Lick nipples" },
+        blue: { 1: "5 mins", 2: "10 times", 3: "15 seconds", 4: "15 times", 5: "10 mins", 6: "You choose" }
+      },
+      wrong2: {
+        title: "2 Wrong in a Row — Penance",
+        red: { 1: "Smack in ass", 2: "Pull nipples", 3: "Bite neck", 4: "Slap cock", 5: "Slap face", 6: "U choose" },
+        blue: { 1: "10 second", 2: "4 times", 3: "U choose", 4: "15 times", 5: "5 mins", 6: "I choose" }
+      }
+    };
+
+    function loadQuestion() {
+      const nextBtn = document.getElementById('nextQuestionBtn');
+      nextBtn.style.display = 'none';
+
+      const tierList = questionBank[currentLevel] || questionBank[1];
+      currentQ = tierList[Math.floor(Math.random() * tierList.length)];
+
+      document.getElementById('questionCategory').innerText = currentQ.category;
+      document.getElementById('questionTierText').innerText = `Tier: ${currentLevel}`;
+      document.getElementById('questionText').innerText = currentQ.q;
+
+      const grid = document.getElementById('optionsGrid');
+      grid.innerHTML = '';
+      currentQ.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.innerHTML = `<b>${String.fromCharCode(65 + idx)}.</b> ${opt}`;
+        btn.onclick = () => selectOption(idx, btn);
+        grid.appendChild(btn);
+      });
+    }
+
+    function selectOption(idx, clickedBtn) {
+      const allBtns = document.querySelectorAll('.option-btn');
+      allBtns.forEach(b => b.disabled = true);
+
+      const isCorrect = (idx === currentQ.answer);
+      const nextBtn = document.getElementById('nextQuestionBtn');
+
+      if (isCorrect) {
+        clickedBtn.classList.add('correct');
+        totalCorrect++;
+        streak = streak < 0 ? 1 : streak + 1;
+        if (streak >= 3 && currentLevel < 5) currentLevel++;
+
+        nextBtn.style.display = 'inline-block';
+        if (streak >= 3) {
+          nextBtn.innerText = 'Cast Reward Dice ➔';
+          nextBtn.onclick = function() { triggerDice('right3'); };
+        } else {
+          nextBtn.innerText = 'Next Question ➔';
+          nextBtn.onclick = function() { loadQuestion(); };
+        }
+
+        try {
+          if (typeof confetti === 'function') {
+            confetti({ particleCount: 110, spread: 80, origin: { y: 0.6 }, colors: ['#ffd700', '#2ecc71', '#ffffff'] });
+          }
+        } catch (e) {}
+
+      } else {
+        clickedBtn.classList.add('wrong');
+        allBtns[currentQ.answer].classList.add('correct');
+        totalWrong++;
+        streak = streak > 0 ? -1 : streak - 1;
+
+        // Dramatic screen tremor on wrong answer
+        const container = document.getElementById('mainContainer');
+        container.classList.add('shake-anim');
+        setTimeout(() => container.classList.remove('shake-anim'), 400);
+
+        nextBtn.style.display = 'inline-block';
+        if (streak <= -2) {
+          nextBtn.innerText = 'Cast Penance Dice ➔';
+          nextBtn.onclick = function() { triggerDice('wrong2'); };
+        } else {
+          nextBtn.innerText = 'Next Question ➔';
+          nextBtn.onclick = function() { loadQuestion(); };
+        }
+      }
+
+      updateDashboard();
+    }
+
+    function updateDashboard() {
+      document.getElementById('correctCount').innerText = totalCorrect;
+      document.getElementById('wrongCount').innerText = totalWrong;
+      document.getElementById('diffLevel').innerText = currentLevel;
+      document.getElementById('streakCount').innerText = streak;
+    }
+
+    function triggerDice(ruleKey) {
+      activeRuleKey = ruleKey;
+      document.getElementById('quizPanel').classList.remove('active');
+      document.getElementById('dicePanel').classList.add('active');
+      document.getElementById('diceInstruction').innerText = `Triggered: ${rules[ruleKey].title}! Cast the dice.`;
+      document.getElementById('resultCard').style.display = 'none';
+      document.getElementById('diceRed').innerText = 'ᚠ';
+      document.getElementById('diceBlue').innerText = 'ᚢ';
+    }
+
+    function resetToQuiz() {
+      streak = 0;
+      updateDashboard();
+      document.getElementById('dicePanel').classList.remove('active');
+      document.getElementById('quizPanel').classList.add('active');
+      loadQuestion();
+    }
+
+    function rollDice() {
+      const redDice = document.getElementById('diceRed');
+      const blueDice = document.getElementById('diceBlue');
+      const resultCard = document.getElementById('resultCard');
+      resultCard.style.display = 'none';
+
+      let count = 0;
+      const interval = setInterval(() => {
+        redDice.innerText = Math.floor(Math.random() * 6) + 1;
+        blueDice.innerText = Math.floor(Math.random() * 6) + 1;
+        count++;
+        if (count > 10) {
+          clearInterval(interval);
+          const rVal = Math.floor(Math.random() * 6) + 1;
+          const bVal = Math.floor(Math.random() * 6) + 1;
+          redDice.innerText = rVal;
+          blueDice.innerText = bVal;
+
+          const ruleSet = rules[activeRuleKey];
+          document.getElementById('resultHeader').innerText = ruleSet.title;
+          document.getElementById('redOutcome').innerText = `Action: ${ruleSet.red[rVal]}`;
+          document.getElementById('blueOutcome').innerText = `Duration/Count: ${ruleSet.blue[bVal]}`;
+          resultCard.style.display = 'block';
+        }
+      }, 70);
+    }
+
+    window.onload = loadQuestion;
+  </script>
+</body>
+</html>
