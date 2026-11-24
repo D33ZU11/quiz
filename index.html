@@ -3,30 +3,34 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>The Innocent One | Gothic Viking Fate</title>
+  <!-- CHANGE PAGE TAB TITLE HERE -->
+  <title>The Queen's Trial | Princess & Love of My Life</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.min.js"></script>
   <style>
+    /* =====================================================================
+       COLOUR THEME VARIABLES — Edit hex codes here to change the whole vibe
+       ===================================================================== */
     :root {
-      --bg-dark: #070509;
-      --card-bg: rgba(18, 12, 24, 0.96);
-      --gold: #f3e5ab;
-      --gold-bright: #ffd700;
-      --red-accent: #8b0000;
-      --red-glow: #ff2a2a;
-      --blue-accent: #1e3f66;
-      --blue-glow: #00bfff;
-      --text-light: #f7f2fc;
-      --text-muted: #c2b2d2;
+      --bg-dark: #120714;          /* Deep royal night plum background */
+      --card-bg: rgba(28, 12, 32, 0.96); /* Rich velvet card surface */
+      --gold: #f6dfbe;             /* Soft champagne gold */
+      --gold-bright: #ffd166;      /* Bright royal gold for stats/highlights */
+      --rose-accent: #7a1c4b;      /* Deep royal rose/berry */
+      --rose-glow: #ff7eb6;        /* Soft rose glow for Red/Royal Dice */
+      --velvet-accent: #3d1e6d;    /* Royal amethyst */
+      --velvet-glow: #c084fc;      /* Soft lavender-gold glow for Blue Dice */
+      --text-light: #fff7fb;       /* Warm ivory-pink body text */
+      --text-muted: #dfb8ce;       /* Muted rose-lavender labels */
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       background-color: var(--bg-dark);
-      background-image: 
-        radial-gradient(circle at 50% 20%, #2a1235 0%, #070509 70%),
-        repeating-linear-gradient(45deg, rgba(212, 175, 55, 0.015) 0px, rgba(212, 175, 55, 0.015) 2px, transparent 2px, transparent 40px);
+      background-image:
+        radial-gradient(circle at 50% 18%, #4b1846 0%, #120714 72%),
+        repeating-linear-gradient(45deg, rgba(255, 209, 102, 0.02) 0px, rgba(255, 209, 102, 0.02) 2px, transparent 2px, transparent 40px);
       color: var(--text-light);
       font-family: 'Montserrat', sans-serif;
       min-height: 100vh;
@@ -42,24 +46,24 @@
       max-width: 700px;
       width: 100%;
       background: var(--card-bg);
-      border: 2px solid #5a3d6e;
-      box-shadow: 0 0 50px rgba(0,0,0,0.95), inset 0 0 25px rgba(212, 175, 55, 0.12);
-      border-radius: 18px;
+      border: 2px solid #9c6688;
+      box-shadow: 0 0 55px rgba(0, 0, 0, 0.9), inset 0 0 28px rgba(255, 209, 102, 0.14);
+      border-radius: 20px;
       padding: 35px;
       text-align: center;
       position: relative;
     }
 
-    /* Ambient Rune Watermark */
+    /* Subtle corner emblem — change content: "♕" or "♡" if you like */
     .container::before {
-      content: "ᚱᚢᚾᛖ";
+      content: "♕ ♡ ♕";
       position: absolute;
-      top: 15px;
-      right: 25px;
+      top: 14px;
+      right: 22px;
       font-family: 'Cinzel', serif;
-      font-size: 1.2rem;
-      color: rgba(212, 175, 55, 0.25);
-      letter-spacing: 5px;
+      font-size: 1rem;
+      color: rgba(255, 209, 102, 0.35);
+      letter-spacing: 4px;
       pointer-events: none;
     }
 
@@ -67,35 +71,35 @@
       font-family: 'Cinzel', serif;
       font-weight: 900;
       color: var(--gold);
-      font-size: 2.3rem;
-      letter-spacing: 3px;
-      margin-bottom: 5px;
-      text-shadow: 0 0 15px rgba(243, 229, 171, 0.5);
-      background: linear-gradient(180deg, #fff 0%, var(--gold) 100%);
+      font-size: 2.25rem;
+      letter-spacing: 2.5px;
+      margin-bottom: 6px;
+      text-shadow: 0 0 18px rgba(255, 209, 102, 0.45);
+      background: linear-gradient(180deg, #ffffff 0%, var(--gold) 55%, #e8a87c 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
 
     .subtitle {
       font-family: 'Cinzel', serif;
-      font-size: 1rem;
+      font-size: 0.95rem;
       letter-spacing: 2px;
       color: var(--text-muted);
-      margin-bottom: 25px;
+      margin-bottom: 24px;
       text-transform: uppercase;
     }
 
-    /* Luxury Dashboard Tally */
+    /* Royal Tally Dashboard */
     .dashboard {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
-      background: rgba(10, 6, 15, 0.9);
-      border: 1px solid #4a305e;
-      border-radius: 12px;
+      background: rgba(16, 6, 20, 0.92);
+      border: 1px solid #7d4b6c;
+      border-radius: 14px;
       padding: 15px;
-      margin-bottom: 25px;
-      box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
+      margin-bottom: 24px;
+      box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.75);
     }
 
     .stat-box {
@@ -117,7 +121,7 @@
       color: var(--gold-bright);
       font-weight: 700;
       font-size: 1.2rem;
-      text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
+      text-shadow: 0 0 8px rgba(255, 209, 102, 0.35);
     }
 
     .game-panel { display: none; }
@@ -130,12 +134,12 @@
 
     /* Quiz Box Styling */
     .quiz-box {
-      background: rgba(14, 9, 20, 0.9);
-      border: 1px solid #503766;
-      border-radius: 14px;
+      background: rgba(20, 8, 25, 0.92);
+      border: 1px solid #824f71;
+      border-radius: 16px;
       padding: 30px;
       margin-bottom: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
     .question-header {
@@ -151,9 +155,9 @@
 
     .question-title {
       font-family: 'Cinzel', serif;
-      font-size: 1.35rem;
+      font-size: 1.32rem;
       color: #ffffff;
-      margin-bottom: 25px;
+      margin-bottom: 24px;
       line-height: 1.6;
       font-weight: 700;
     }
@@ -162,53 +166,53 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
-      margin-bottom: 25px;
+      margin-bottom: 22px;
     }
 
     .option-btn {
-      background: linear-gradient(135deg, #22172e, #140d1c);
-      border: 1px solid #5a3d73;
+      background: linear-gradient(135deg, #35183e, #1d0c24);
+      border: 1px solid #885278;
       color: var(--text-light);
       padding: 16px 20px;
-      border-radius: 10px;
+      border-radius: 12px;
       font-family: 'Montserrat', sans-serif;
       font-size: 1rem;
       font-weight: 500;
       cursor: pointer;
       text-align: left;
       transition: all 0.25s ease;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
     }
 
     .option-btn:hover {
-      border-color: var(--gold);
-      background: linear-gradient(135deg, #322144, #1b1126);
+      border-color: var(--gold-bright);
+      background: linear-gradient(135deg, #4b2157, #271030);
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(212, 175, 55, 0.15);
+      box-shadow: 0 6px 20px rgba(255, 209, 102, 0.18);
     }
 
     .option-btn.correct {
-      background: linear-gradient(135deg, #0f4a26, #072613) !important;
-      border-color: #2ecc71 !important;
-      color: #2ecc71 !important;
+      background: linear-gradient(135deg, #115233, #082919) !important;
+      border-color: #38d996 !important;
+      color: #8af7c6 !important;
       font-weight: 700;
-      box-shadow: 0 0 20px rgba(46, 204, 113, 0.3) !important;
+      box-shadow: 0 0 20px rgba(56, 217, 150, 0.3) !important;
     }
 
     .option-btn.wrong {
-      background: linear-gradient(135deg, #591212, #290505) !important;
-      border-color: #e74c3c !important;
-      color: #e74c3c !important;
-      box-shadow: 0 0 20px rgba(231, 76, 60, 0.3) !important;
+      background: linear-gradient(135deg, #691638, #33081a) !important;
+      border-color: #ff6b8b !important;
+      color: #ffb3c4 !important;
+      box-shadow: 0 0 20px rgba(255, 107, 139, 0.28) !important;
     }
 
     .next-btn {
-      background: linear-gradient(135deg, #593c70, #332042);
-      border: 2px solid var(--gold);
+      background: linear-gradient(135deg, #7c355b, #471b35);
+      border: 2px solid var(--gold-bright);
       color: var(--gold);
       font-family: 'Cinzel', serif;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1.08rem;
       padding: 14px 35px;
       border-radius: 30px;
       cursor: pointer;
@@ -216,13 +220,13 @@
       margin-top: 10px;
       text-transform: uppercase;
       letter-spacing: 2px;
-      box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+      box-shadow: 0 0 22px rgba(255, 209, 102, 0.25);
       transition: all 0.3s ease;
     }
 
     .next-btn:hover {
-      background: linear-gradient(135deg, #6d4b87, #422a55);
-      box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+      background: linear-gradient(135deg, #96426f, #5a2343);
+      box-shadow: 0 0 28px rgba(255, 209, 102, 0.45);
       transform: scale(1.03);
     }
 
@@ -230,87 +234,87 @@
     .dice-area {
       display: flex;
       justify-content: space-around;
-      margin: 30px 0;
+      margin: 28px 0;
       gap: 20px;
     }
 
     .dice-box {
       flex: 1;
-      background: rgba(10, 6, 15, 0.85);
-      border-radius: 14px;
+      background: rgba(16, 6, 20, 0.88);
+      border-radius: 16px;
       padding: 20px 10px;
-      border: 1px solid #4a305e;
-      box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
+      border: 1px solid #7d4b6c;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.75);
     }
 
     .dice {
       width: 90px;
       height: 90px;
       margin: 15px auto;
-      border-radius: 16px;
+      border-radius: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.8rem;
+      font-size: 2.6rem;
       font-weight: 700;
       font-family: 'Cinzel', serif;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.6), inset 0 0 15px rgba(255,255,255,0.1);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.55), inset 0 0 15px rgba(255, 255, 255, 0.12);
     }
 
     .dice-red {
-      background: linear-gradient(145deg, #6b0000, #260000);
-      border: 2px solid var(--red-glow);
-      color: #ffcccc;
-      text-shadow: 0 0 12px var(--red-glow);
+      background: linear-gradient(145deg, #8b1e4b, #3a091f);
+      border: 2px solid var(--rose-glow);
+      color: #ffe3ef;
+      text-shadow: 0 0 12px var(--rose-glow);
     }
 
     .dice-blue {
-      background: linear-gradient(145deg, #0d325c, #030f1c);
-      border: 2px solid var(--blue-glow);
-      color: #ccf2ff;
-      text-shadow: 0 0 12px var(--blue-glow);
+      background: linear-gradient(145deg, #4f258a, #1d0c38);
+      border: 2px solid var(--velvet-glow);
+      color: #f3e6ff;
+      text-shadow: 0 0 12px var(--velvet-glow);
     }
 
     .roll-btn {
-      background: linear-gradient(180deg, #9e0b0b 0%, #4a0000 100%);
-      border: 2px solid var(--gold);
+      background: linear-gradient(180deg, #a82862 0%, #591133 100%);
+      border: 2px solid var(--gold-bright);
       color: var(--gold);
       font-family: 'Cinzel', serif;
       font-weight: 700;
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       padding: 16px 45px;
       border-radius: 35px;
       cursor: pointer;
       text-transform: uppercase;
       letter-spacing: 2px;
-      box-shadow: 0 0 30px rgba(158, 11, 11, 0.7);
+      box-shadow: 0 0 30px rgba(168, 40, 98, 0.65);
       transition: all 0.3s ease;
     }
 
     .roll-btn:hover {
       transform: scale(1.05);
-      box-shadow: 0 0 40px rgba(212, 175, 55, 0.6);
+      box-shadow: 0 0 38px rgba(255, 209, 102, 0.55);
     }
 
     .result-card {
-      margin-top: 30px;
-      background: rgba(14, 9, 20, 0.95);
-      border: 2px dashed var(--gold);
-      border-radius: 14px;
+      margin-top: 28px;
+      background: rgba(20, 8, 25, 0.95);
+      border: 2px dashed var(--gold-bright);
+      border-radius: 16px;
       padding: 25px;
       display: none;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.75);
       animation: fadeIn 0.5s ease;
     }
 
     .action-btn {
-      background: linear-gradient(135deg, #3d2a4a, #23172e);
-      border: 1px solid var(--gold);
+      background: linear-gradient(135deg, #5d2949, #311226);
+      border: 1px solid var(--gold-bright);
       color: var(--gold);
       font-family: 'Cinzel', serif;
       font-weight: 700;
       padding: 12px 28px;
-      border-radius: 8px;
+      border-radius: 10px;
       cursor: pointer;
       margin-top: 20px;
       text-transform: uppercase;
@@ -319,11 +323,11 @@
     }
 
     .action-btn:hover {
-      background: #543b66;
-      box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+      background: #78365f;
+      box-shadow: 0 0 16px rgba(255, 209, 102, 0.4);
     }
 
-    /* Wrong screen shake */
+    /* Gentle tremor on wrong answer */
     @keyframes screenShake {
       0%, 100% { transform: translateX(0); }
       20%, 60% { transform: translateX(-8px); }
@@ -332,17 +336,24 @@
     .shake-anim {
       animation: screenShake 0.4s ease-in-out;
     }
+
+    @media (max-width: 520px) {
+      h1 { font-size: 1.75rem; }
+      .dashboard { grid-template-columns: repeat(2, 1fr); }
+      .dice-area { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
 
   <div class="container" id="mainContainer">
-    <h1>The Innocent One's Trial</h1>
-    <div class="subtitle">ᚱᚢᚾᛖ Knowledge, Fate & Consequences ᚱᚢᚾᛖ</div>
+    <!-- MAIN TITLE & ROYAL SUBTITLE — Edit freely -->
+    <h1>The Queen's Trial</h1>
+    <div class="subtitle">♡ Princess &amp; Love of My Life — Royal Fate &amp; Desires ♡</div>
 
     <div class="dashboard">
-      <div class="stat-box"><span class="stat-label">Correct</span><span class="stat-value" id="correctCount" style="color: #2ecc71;">0</span></div>
-      <div class="stat-box"><span class="stat-label">Wrong</span><span class="stat-value" id="wrongCount" style="color: #e74c3c;">0</span></div>
+      <div class="stat-box"><span class="stat-label">Correct</span><span class="stat-value" id="correctCount" style="color: #38d996;">0</span></div>
+      <div class="stat-box"><span class="stat-label">Wrong</span><span class="stat-value" id="wrongCount" style="color: #ff6b8b;">0</span></div>
       <div class="stat-box"><span class="stat-label">Level</span><span class="stat-value" id="diffLevel">1</span></div>
       <div class="stat-box"><span class="stat-label">Streak</span><span class="stat-value" id="streakCount">0</span></div>
     </div>
@@ -354,7 +365,7 @@
           <span id="questionCategory">Category</span>
           <span id="questionTierText">Tier: 1</span>
         </div>
-        <div class="question-title" id="questionText">Loading...</div>
+        <div class="question-title" id="questionText">Loading for my Queen...</div>
         <div class="options-grid" id="optionsGrid"></div>
         <button class="next-btn" id="nextQuestionBtn">Next Question ➔</button>
       </div>
@@ -362,77 +373,120 @@
 
     <!-- DICE PANEL -->
     <div id="dicePanel" class="game-panel">
-      <div style="font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 20px; font-size: 1.25rem;" id="diceInstruction">Fate is sealed! Cast your dice.</div>
+      <div style="font-family: 'Cinzel', serif; color: var(--gold); margin-bottom: 20px; font-size: 1.25rem;" id="diceInstruction">Fate is sealed, my Queen! Cast your dice.</div>
       <div class="dice-area">
         <div class="dice-box">
-          <div style="color: #ff6b6b; font-family: 'Cinzel', serif; font-weight: 600;">Action (Red)</div>
-          <div class="dice dice-red" id="diceRed">ᚠ</div>
+          <div style="color: #ff85b8; font-family: 'Cinzel', serif; font-weight: 600;">Royal Desire (Rose)</div>
+          <div class="dice dice-red" id="diceRed">♕</div>
         </div>
         <div class="dice-box">
-          <div style="color: #64dfdf; font-family: 'Cinzel', serif; font-weight: 600;">Duration (Blue)</div>
-          <div class="dice dice-blue" id="diceBlue">ᚢ</div>
+          <div style="color: #d8b4fe; font-family: 'Cinzel', serif; font-weight: 600;">Duration / Count (Velvet)</div>
+          <div class="dice dice-blue" id="diceBlue">♡</div>
         </div>
       </div>
-      <button class="roll-btn" onclick="rollDice()">Cast the Dice</button>
+      <button class="roll-btn" onclick="rollDice()">Cast the Royal Dice</button>
       <div class="result-card" id="resultCard">
-        <h3 id="resultHeader" style="font-family:'Cinzel',serif; color:var(--gold); font-size: 1.4rem; margin-bottom:12px;">Fate Has Decided</h3>
+        <h3 id="resultHeader" style="font-family:'Cinzel',serif; color:var(--gold); font-size: 1.4rem; margin-bottom:12px;">The Queen's Decree</h3>
         <div class="outcome-text" style="font-size: 1.2rem; line-height: 1.7;">
-          <span id="redOutcome" style="color:#ff6b6b; font-weight:700;"></span><br>
-          <span id="blueOutcome" style="color:#64dfdf; font-weight:700;"></span>
+          <span id="redOutcome" style="color:#ff85b8; font-weight:700;"></span><br>
+          <span id="blueOutcome" style="color:#d8b4fe; font-weight:700;"></span>
         </div>
-        <button class="action-btn" onclick="resetToQuiz()">Return to Trial</button>
+        <button class="action-btn" onclick="resetToQuiz()">Back to the Trial</button>
       </div>
     </div>
   </div>
 
   <script>
+    /* =====================================================================
+       QUESTION BANK (Levels 1 to 5)
+       How to edit:
+       - Change "category", "q" (question text), "options" (4 choices),
+         and "answer" (0 = A, 1 = B, 2 = C, 3 = D).
+       - Add more { ... } objects inside any level array if you want more variety.
+       ===================================================================== */
     const questionBank = {
       1: [
-        { category: "Geography", q: "What is the capital city of Scotland?", options: ["Glasgow", "Edinburgh", "Aberdeen", "Dundee"], answer: 1 },
-        { category: "Pop Culture", q: "Which element on the periodic table has the chemical symbol 'O'?", options: ["Gold", "Osmium", "Oxygen", "Zinc"], answer: 2 },
-        { category: "General Knowledge", q: "How many sides does a standard hexagon have?", options: ["5", "6", "7", "8"], answer: 1 }
+        { category: "Royal Geography", q: "Which city is known as the capital of Scotland, my love?", options: ["Glasgow", "Edinburgh", "Inverness", "Stirling"], answer: 1 },
+        { category: "Love & Romance", q: "Which stone is traditionally the classic symbol of a royal crown or engagement?", options: ["Diamond", "Pumice", "Limestone", "Chalk"], answer: 0 },
+        { category: "Sweet & Royal", q: "How many sides does a standard hexagon have?", options: ["5", "6", "7", "8"], answer: 1 }
       ],
       2: [
         { category: "History", q: "In which year did the Battle of Hastings take place in England?", options: ["1066", "1215", "1415", "1588"], answer: 0 },
-        { category: "Nature & Animals", q: "What is the largest mammal currently living on Earth?", options: ["African Elephant", "Blue Whale", "Colossal Squid", "Giraffe"], answer: 1 },
-        { category: "Literature", q: "Who wrote the classic Gothic novel 'Frankenstein'?", options: ["Bram Stoker", "Mary Shelley", "Jane Austen", "Charles Dickens"], answer: 1 }
+        { category: "Nature & Wildlife", q: "What is the largest mammal currently living on Earth?", options: ["African Elephant", "Blue Whale", "Colossal Squid", "Giraffe"], answer: 1 },
+        { category: "Classic Tales", q: "Who wrote the classic Gothic novel 'Frankenstein'?", options: ["Bram Stoker", "Mary Shelley", "Jane Austen", "Charles Dickens"], answer: 1 }
       ],
       3: [
-        { category: "Human Anatomy", q: "Which organ in the human body consumes roughly 20% of the body's total oxygen intake?", options: ["Lungs", "Heart", "Liver", "Brain"], answer: 3 },
-        { category: "World History", q: "Which ancient civilization constructed the city of Machu Picchu high in the Andes?", options: ["Aztecs", "Mayans", "Incas", "Toltecs"], answer: 2 },
-        { category: "Physics & Chemistry", q: "What is the hardest naturally occurring substance found on Earth?", options: ["Titanium", "Diamond", "Quartz", "Graphene"], answer: 1 }
+        { category: "Science & Body", q: "Which organ in the human body uses roughly 20% of the body's oxygen intake?", options: ["Lungs", "Heart", "Liver", "Brain"], answer: 3 },
+        { category: "World History", q: "Which ancient civilization built Machu Picchu high in the Andes?", options: ["Aztecs", "Mayans", "Incas", "Toltecs"], answer: 2 },
+        { category: "Gemstones & Science", q: "What is the hardest naturally occurring substance found on Earth?", options: ["Titanium", "Diamond", "Quartz", "Graphene"], answer: 1 }
       ],
       4: [
-        { category: "Astronomy & Physics", q: "What is the theoretical boundary surrounding a black hole beyond which nothing can escape?", options: ["Photon Sphere", "Singularity", "Event Horizon", "Accretion Disk"], answer: 2 },
-        { category: "World History", q: "Who was the first Emperor of a unified China, famous for his Terracotta Army?", options: ["Qin Shi Huang", "Kublai Khan", "Sun Tzu", "Emperor Wu of Han"], answer: 0 },
-        { category: "Classical Literature", q: "In Norse mythology, what is the name of the great hall ruled over by the god Odin?", options: ["Asgard", "Valhalla", "Midgard", "Niflheim"], answer: 1 }
+        { category: "Stars & Cosmos", q: "What is the boundary around a black hole beyond which nothing can escape?", options: ["Photon Sphere", "Singularity", "Event Horizon", "Accretion Disk"], answer: 2 },
+        { category: "World History", q: "Who was the first Emperor of a unified China, famous for the Terracotta Army?", options: ["Qin Shi Huang", "Kublai Khan", "Sun Tzu", "Emperor Wu of Han"], answer: 0 },
+        { category: "Mythology", q: "In Norse mythology, what is the name of Odin's great hall?", options: ["Asgard", "Valhalla", "Midgard", "Niflheim"], answer: 1 }
       ],
       5: [
-        { category: "Philosophy & Science", q: "Which ancient philosopher formulated the famous line 'I think, therefore I am' (Cogito, ergo sum)?", options: ["Spinoza", "Immanuel Kant", "René Descartes", "Friedrich Nietzsche"], answer: 2 },
-        { category: "Botany & Science", q: "What pigment gives red, purple, and blue plants their vibrant colors and acts as an antioxidant?", options: ["Chlorophyll", "Anthocyanin", "Carotenoid", "Xanthophyll"], answer: 1 },
-        { category: "History & Antiquity", q: "The Roman Empire reached its greatest geographical expanse under which Emperor in 117 AD?", options: ["Augustus", "Trajan", "Hadrian", "Marcus Aurelius"], answer: 1 }
+        { category: "Philosophy", q: "Who wrote 'I think, therefore I am' (Cogito, ergo sum)?", options: ["Spinoza", "Immanuel Kant", "René Descartes", "Friedrich Nietzsche"], answer: 2 },
+        { category: "Botany", q: "What pigment gives red, purple, and blue plants their rich colours?", options: ["Chlorophyll", "Anthocyanin", "Carotenoid", "Xanthophyll"], answer: 1 },
+        { category: "Ancient History", q: "Under which Emperor did the Roman Empire reach its greatest size in 117 AD?", options: ["Augustus", "Trajan", "Hadrian", "Marcus Aurelius"], answer: 1 }
       ]
     };
 
+    /* =====================================================================
+       DICE OUTCOMES — Edit any text inside quotes ("...") to customize!
+       - right3: Triggered when she gets 3 right answers in a row.
+       - wrong2: Triggered when she gets 2 wrong answers in a row.
+       - red (1-6): The action / royal decree.
+       - blue (1-6): The time or count.
+       ===================================================================== */
+    const rules = {
+      right3: {
+        title: "3 Right in a Row — The Queen's Spoils",
+        red: {
+          1: "Lick ass",
+          2: "Suck cock",
+          3: "Kiss",
+          4: "Ball play",
+          5: "Lick ass & milk cock together",
+          6: "Lick nipples"
+        },
+        blue: {
+          1: "5 mins",
+          2: "10 times",
+          3: "15 seconds",
+          4: "15 times",
+          5: "10 mins",
+          6: "You choose, my Queen"
+        }
+      },
+      wrong2: {
+        title: "2 Wrong in a Row — Naughty Princess Twist",
+        red: {
+          1: "Smack in ass",
+          2: "Pull nipples",
+          3: "Bite neck",
+          4: "Slap cock",
+          5: "Slap face",
+          6: "You choose, princess"
+        },
+        blue: {
+          1: "10 seconds",
+          2: "4 times",
+          3: "You choose, love",
+          4: "15 times",
+          5: "5 mins",
+          6: "I choose for my Queen"
+        }
+      }
+    };
+
+    // Game state variables (start values)
     let currentLevel = 1;
     let streak = 0;
     let totalCorrect = 0;
     let totalWrong = 0;
     let currentQ = null;
     let activeRuleKey = null;
-
-    const rules = {
-      right3: {
-        title: "3 Right in a Row — Reward",
-        red: { 1: "Lick ass", 2: "Suck cock", 3: "Kiss", 4: "Ball play", 5: "Lick ass & milk cock together", 6: "Lick nipples" },
-        blue: { 1: "5 mins", 2: "10 times", 3: "15 seconds", 4: "15 times", 5: "10 mins", 6: "You choose" }
-      },
-      wrong2: {
-        title: "2 Wrong in a Row — Penance",
-        red: { 1: "Smack in ass", 2: "Pull nipples", 3: "Bite neck", 4: "Slap cock", 5: "Slap face", 6: "U choose" },
-        blue: { 1: "10 second", 2: "4 times", 3: "U choose", 4: "15 times", 5: "5 mins", 6: "I choose" }
-      }
-    };
 
     function loadQuestion() {
       const nextBtn = document.getElementById('nextQuestionBtn');
@@ -467,20 +521,24 @@
         clickedBtn.classList.add('correct');
         totalCorrect++;
         streak = streak < 0 ? 1 : streak + 1;
+
+        // Level up every time streak hits 3 (up to level 5)
         if (streak >= 3 && currentLevel < 5) currentLevel++;
 
         nextBtn.style.display = 'inline-block';
+        // STREAK THRESHOLD FOR REWARD DICE: change 3 below if you want a different streak number
         if (streak >= 3) {
-          nextBtn.innerText = 'Cast Reward Dice ➔';
+          nextBtn.innerText = 'Claim Your Royal Dice ➔';
           nextBtn.onclick = function() { triggerDice('right3'); };
         } else {
           nextBtn.innerText = 'Next Question ➔';
           nextBtn.onclick = function() { loadQuestion(); };
         }
 
+        // Gold & rose celebration confetti
         try {
           if (typeof confetti === 'function') {
-            confetti({ particleCount: 110, spread: 80, origin: { y: 0.6 }, colors: ['#ffd700', '#2ecc71', '#ffffff'] });
+            confetti({ particleCount: 115, spread: 80, origin: { y: 0.6 }, colors: ['#ffd166', '#ff7eb6', '#ffffff'] });
           }
         } catch (e) {}
 
@@ -490,14 +548,14 @@
         totalWrong++;
         streak = streak > 0 ? -1 : streak - 1;
 
-        // Dramatic screen tremor on wrong answer
         const container = document.getElementById('mainContainer');
         container.classList.add('shake-anim');
         setTimeout(() => container.classList.remove('shake-anim'), 400);
 
         nextBtn.style.display = 'inline-block';
+        // STREAK THRESHOLD FOR PENANCE/TWIST DICE: change -2 below if you want more or fewer wrong answers
         if (streak <= -2) {
-          nextBtn.innerText = 'Cast Penance Dice ➔';
+          nextBtn.innerText = 'Roll the Twist Dice ➔';
           nextBtn.onclick = function() { triggerDice('wrong2'); };
         } else {
           nextBtn.innerText = 'Next Question ➔';
@@ -519,10 +577,10 @@
       activeRuleKey = ruleKey;
       document.getElementById('quizPanel').classList.remove('active');
       document.getElementById('dicePanel').classList.add('active');
-      document.getElementById('diceInstruction').innerText = `Triggered: ${rules[ruleKey].title}! Cast the dice.`;
+      document.getElementById('diceInstruction').innerText = `${rules[ruleKey].title}! Cast the dice, my love.`;
       document.getElementById('resultCard').style.display = 'none';
-      document.getElementById('diceRed').innerText = 'ᚠ';
-      document.getElementById('diceBlue').innerText = 'ᚢ';
+      document.getElementById('diceRed').innerText = '♕';
+      document.getElementById('diceBlue').innerText = '♡';
     }
 
     function resetToQuiz() {
@@ -553,8 +611,8 @@
 
           const ruleSet = rules[activeRuleKey];
           document.getElementById('resultHeader').innerText = ruleSet.title;
-          document.getElementById('redOutcome').innerText = `Action: ${ruleSet.red[rVal]}`;
-          document.getElementById('blueOutcome').innerText = `Duration/Count: ${ruleSet.blue[bVal]}`;
+          document.getElementById('redOutcome').innerText = `Desire: ${ruleSet.red[rVal]}`;
+          document.getElementById('blueOutcome').innerText = `Duration / Count: ${ruleSet.blue[bVal]}`;
           resultCard.style.display = 'block';
         }
       }, 70);
